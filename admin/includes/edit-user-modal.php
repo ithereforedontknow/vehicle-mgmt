@@ -6,7 +6,7 @@
                 <h5 class="modal-title" id="edit-user-modal-label">Edit User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="edit-user-form">
+            <form id="edit-user">
                 <div class="modal-body">
                     <input type="hidden" id="edit-user-id" name="edit-user-id">
                     <div class="mb-3">
@@ -14,10 +14,13 @@
                         <input type="text" class="form-control" id="edit-fname" name="edit-fname" required>
                     </div>
                     <div class="mb-3">
+                        <label for="edit-mname" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="edit-mname" name="edit-mname" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="edit-lname" class="form-label">Last Name</label>
                         <input type="text" class="form-control" id="edit-lname" name="edit-lname" required>
                     </div>
-
                     <div class="mb-3">
                         <label for="user-level">User level</label>
                         <select class="form-control" id="edit-userlevel" name="edit-userlevel" required>

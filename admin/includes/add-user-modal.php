@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group mb-2">
                         <label for="user-level">User level</label>
-                        <select class="form-control" id="user-level" name="userlevel" required>
+                        <select class="form-control" id="userlevel" name="userlevel" required>
                             <option value="admin">Admin</option>
                             <option value="tech assoc">Technical Associate</option>
                         </select>
@@ -33,7 +33,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="add_user()">Add</button>
+                <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
         </div>

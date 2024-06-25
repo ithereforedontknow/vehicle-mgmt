@@ -5,13 +5,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle form submission
     $id = $_POST['edit-user-id'];
     $fname = $_POST['edit-fname'];
+    $mname = $_POST['edit-mname'];
     $lname = $_POST['edit-lname'];
     $userlevel = $_POST['edit-userlevel'];
 
     // Update user in the database
-    $sql = "UPDATE tbl_user SET fname = :fname, lname = :lname, userlevel = :userlevel WHERE id = :id";
+    $sql = "UPDATE tbl_user SET fname = :fname, mname = :mname, lname = :lname, userlevel = :userlevel WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
+    $stmt->bindParam(':mname', $mname, PDO::PARAM_STR);
     $stmt->bindParam(':lname', $lname, PDO::PARAM_STR);
     $stmt->bindParam(':userlevel', $userlevel, PDO::PARAM_STR);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);

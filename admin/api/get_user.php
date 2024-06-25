@@ -9,13 +9,13 @@ if (isset($_GET['id'])) {
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $vehicle = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user) {
+    if ($vehicle) {
         // Return JSON response
-        echo json_encode($user);
+        echo json_encode($vehicle);
     } else {
         // Return error response if user not found
-        echo json_encode(array('error' => 'User not found'));
+        echo json_encode(array('error' => 'Vehicle not found'));
     }
 }

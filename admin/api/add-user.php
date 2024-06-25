@@ -2,11 +2,11 @@
 require '../../api/db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fname = htmlspecialchars($_POST['fname']);
-    $mname = htmlspecialchars($_POST['mname']);
-    $lname = htmlspecialchars($_POST['lname']);
+    $fname = $_POST['fname'];
+    $mname = $_POST['mname'];
+    $lname = $_POST['lname'];
     $password = $_POST['password'];
-    $userlevel = htmlspecialchars($_POST['userlevel']);
+    $userlevel = $_POST['userlevel'];
 
 
     // Check if id is unique
@@ -28,4 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $conn->close();
+} else {
+    echo "Invalid request";
 }

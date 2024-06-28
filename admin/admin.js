@@ -1,3 +1,15 @@
+$(document).ready(function () {
+  $("#sidebarToggle").on("click", function () {
+    $("#sidebar").toggleClass("hidden");
+    $("#content").toggleClass("full-width");
+  });
+});
+document.addEventListener("DOMContentLoaded", function () {
+  var dropdown = document.getElementById("vehicleTransactionsDropdown");
+  dropdown.addEventListener("click", function () {
+    dropdown.classList.toggle("collapse show");
+  });
+});
 // Handle form submission for add user
 
 $("#add-user").submit(function (event) {
@@ -209,6 +221,164 @@ $("#edit-vehicle").submit(function (event) {
     error: function (xhr, status, error) {
       console.error("Error updating user:", error);
       alert("Failed to update user. Please try again.");
+    },
+  });
+});
+
+$("#transferInChargeForm").submit(function (event) {
+  event.preventDefault();
+  const employeeFirstName = $("#employeeFirstName").val();
+  const employeeLastName = $("#employeeLastName").val();
+  $.ajax({
+    url: "./api/add_incharge.php",
+    type: "POST",
+    data: {
+      employeeFirstName: employeeFirstName,
+      employeeLastName: employeeLastName,
+    },
+    success: function (data) {
+      if (data == "success") {
+        window.location.reload();
+      } else {
+        alert(data);
+      }
+    },
+  });
+});
+
+function edit_transfer_in_charge(transfer_in_charge_id) {
+  console.log("Editing transfer in charge with ID:", transfer_in_charge_id);
+  // Fetch transfer in charge details via AJAX
+  $.ajax({
+    url: "./api/get_transfer_in_charge.php",
+    type: "GET",
+    data: { transfer_in_charge_id: transfer_in_charge_id },
+    dataType: "json",
+    success: function (response) {
+      // Populate modal with transfer in charge data
+      $("#editTransferInChargeId").val(response.transfer_in_charge_id);
+      $("#editEmployeeFirstName").val(response.first_name);
+      $("#editEmployeeLastName").val(response.last_name);
+      // Show the modal
+      $("#edit-transfer-in-charge-modal").modal("show");
+    },
+    error: function (xhr, status, error) {
+      console.error("Error fetching transfer in charge data:", error);
+      alert("Failed to fetch transfer in charge data. Please try again.");
+    },
+  });
+}
+
+$("#edit-transfer-in-charge").submit(function (event) {
+  event.preventDefault();
+  // Serialize form data
+  var formData = $(this).serialize();
+  // Submit data via AJAX
+  $.ajax({
+    url: "./api/update_transfer_in_charge.php", // Replace with your API endpoint
+    type: "POST",
+    data: formData,
+    success: function (response) {
+      // Close modal and refresh page or update table
+      console.log(response);
+      $("#edit-transfer-in-charge-modal").modal("hide");
+      // Example: Refresh the page after successful update
+      location.reload(); // You may replace this with a more specific update method
+    },
+    error: function (xhr, status, error) {
+      console.error("Error updating transfer in charge:", error);
+      alert("Failed to update transfer in charge. Please try again.");
+    },
+  });
+});
+function activate_transfer_in_charge(transfer_in_charge_id) {
+  $.post(
+    "./api/activate_transfer_in_charge.php",
+    { id: transfer_in_charge_id },
+    function (data) {
+      console.log(data); // Display the response message
+      location.reload(); // Reload the page to reflect the changes
+    }
+  ).fail(function (jqXHR, textStatus, errorThrown) {
+    console.error("Error: " + textStatus, errorThrown); // Log any errors
+    alert("An error occurred: " + textStatus + " - " + errorThrown);
+  });
+}
+
+function deactivate_transfer_in_charge(transfer_in_charge_id) {
+  $.post(
+    "./api/deactivate_transfer_in_charge.php",
+    { id: transfer_in_charge_id },
+    function (data) {
+      console.log(data); // Display the response message
+      location.reload(); // Reload the page to reflect the changes
+    }
+  ).fail(function (jqXHR, textStatus, errorThrown) {
+    console.error("Error: " + textStatus, errorThrown); // Log any errors
+    alert("An error occurred: " + textStatus + " - " + errorThrown);
+  });
+}
+
+$("#originForm").submit(function (event) {
+  event.preventDefault();
+  const origin = $("#origin").val();
+  $.ajax({
+    url: "./api/add_origin.php",
+    type: "POST",
+    data: {
+      origin: origin,
+    },
+    success: function (data) {
+      if (data == "success") {
+        window.location.reload();
+      } else {
+        alert(data);
+      }
+    },
+  });
+});
+
+function edit_origin(origin_id) {
+  console.log("Editing origin with ID:", origin_id);
+  // Fetch origin details via AJAX
+  $.ajax({
+    url: "./api/get_origin.php",
+    type: "GET",
+    data: { origin_id: origin_id },
+    dataType: "json",
+    success: function (response) {
+      // Populate modal with origin data
+      $("#editOriginId").val(response.origin_id);
+      $("#editOrigin").val(response.origin);
+      // Show the modal
+      $("#edit-origin-modal").modal("show");
+    },
+    error: function (xhr, status, error) {
+      console.error("Error fetching origin data:", error);
+      alert("Failed to fetch origin data. Please try again.");
+    },
+  });
+}
+
+$("#edit-origin").submit(function (event) {
+  event.preventDefault();
+  // Serialize form data
+  var formData = $(this).serialize();
+  // Submit data via AJAX
+  $.ajax({
+    url: "./api/update_origin.php", // Replace with your API endpoint
+    type: "POST",
+    data: formData,
+    success: function (response) {
+      // Close modal and refresh page or update table
+      console.log(response);
+      $("#edit-origin-modal").modal("hide");
+      // Example: Refresh the page after successful update
+      location.reload(); // You may replace this with a more specific update method
+    },
+    error: function (xhr, status, error) {
+      console.error("Error updating origin:", error);
+      alert("Failed to update origin. Please try again.");
     },
   });
 });

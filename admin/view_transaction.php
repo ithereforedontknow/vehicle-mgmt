@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Report Generation</title>
+    <title>Vehicle Transactions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-    <link rel="stylesheet" href="./css/style.css">
 
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body class="bg-light">
@@ -58,12 +58,12 @@
                     <div class="collapse show" id="vehicleTransactionsSubmenu">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="add_transaction.php" class="nav-link text-white"><i class="fa-solid fa-circle fa-2xs me-2" style="color: #6f6f6f;"></i>Add Transaction</a></li>
-                            <li><a href="view_transaction.php" class="nav-link text-white"><i class="fa-solid fa-circle fa-2xs me-2" style="color: #6f6f6f;"></i>View Transactions</a></li>
+                            <li><a href="view_transaction.php" class="nav-link active" aria-current="page"><i class="fa-solid fa-circle fa-2xs me-2" style="color: #6f6f6f;"></i>View Transactions</a></li>
                         </ul>
                     </div>
                 </li>
                 <li>
-                    <a href="report_generation.php" class="nav-link active" aria-current="page">
+                    <a href="report_generation.php" class="nav-link text-white">
                         <i class="fa-solid fa-print fa-lg me-2" style="color: #ffffff;"></i>
                         Report Generation
                     </a>
@@ -77,21 +77,35 @@
         </div>
     </div>
 
-
     <div class="content" id="content">
-        <h1>Welcome to the website!</h1>
-        <p>Click the button at the top left to toggle the sidebar.</p>
+
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
+
     <script src="admin.js"></script>
     <script>
         $(document).ready(function() {
             $('#users-table').DataTable({
                 "pageLength": 5,
                 "lengthChange": false,
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#addRow').on('click', function() {
+                var newRow = `
+        <tr>
+          <td><input type="text" class="table-input" value=""></td>
+          <td><input type="text" class="table-input" value=""></td>
+          <td><input type="text" class="table-input" value=""></td>
+        </tr>
+      `;
+                $('table tbody').append(newRow);
             });
         });
     </script>

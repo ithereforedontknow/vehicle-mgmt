@@ -6,36 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign in</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-  <style>
-    html,
-    body {
-      height: 100%;
-    }
-
-    .form-signin {
-      max-width: 330px;
-      padding: 1rem;
-    }
-
-    .form-signin .form-floating:focus-within {
-      z-index: 2;
-    }
-
-    .form-signin input[type="email"] {
-      margin-bottom: -1px;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    .form-signin input[type="password"] {
-      margin-bottom: 10px;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
-<body>
+<body class="bg-light">
   <main class="form-signin w-100 m-auto">
     <div class="container ">
       <div class="text-center">
@@ -50,7 +24,7 @@
             <input type="password" class="form-control form-control-lg shadow-sm" id="password" name="password" placeholder="Password" required />
             <label for="password">Password</label>
           </div>
-          <button class="btn btn-primary w-100 py-3" type="button" onclick="login_user()">
+          <button class="btn btn-primary w-100 py-3 fs-5" type="button" onclick="login_user()">
             Sign in
           </button>
         </form>

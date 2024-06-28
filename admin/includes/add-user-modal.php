@@ -9,15 +9,15 @@
                 <form id="add-user">
                     <div class="form-group mb-2">
                         <label for="fname">First Name</label>
-                        <input type="text" class="form-control" id="fname" name="fname" required placeholder="Enter username">
+                        <input type="text" class="form-control" id="fname" name="fname" required placeholder="John">
                     </div>
                     <div class="form-group mb-2">
                         <label for="mname">Middle Name</label>
-                        <input type="text" class="form-control" id="mname" name="mname" required placeholder="Enter username">
+                        <input type="text" class="form-control" id="mname" name="mname" required placeholder="">
                     </div>
                     <div class="form-group mb-2">
                         <label for="lname">Last Name</label>
-                        <input type="text" class="form-control" id="lname" name="lname" required placeholder="Enter username">
+                        <input type="text" class="form-control" id="lname" name="lname" required placeholder="Doe">
                     </div>
                     <div class="form-group mb-2">
                         <label for="lastName">Password</label>

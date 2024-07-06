@@ -1,0 +1,109 @@
+<?php
+require '../api/db_connection.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+<body class="bg-light">
+    <?php
+    include_once('./navbar/navbar.php');
+    ?>
+
+
+    <div class="content" id="content">
+        <h2 class="display-3 text-center">Queue</h2>
+        <div class="row">
+            <div class="col-sm">
+                <div class="container shadow-sm p-5 mb-5 bg-body rounded">
+                    <h2 class="display-5 text-center mb-3">Add to Queue</h2>
+                    <table class="table table-hover table-bordered text-center" id="transactions-table">
+                        <!-- ... (table head remains the same) ... -->
+                        <tbody id="transaction-data">
+                            <?php
+                            $sql = "SELECT * FROM Transaction t";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                            ?>
+                                    <tr>
+                                        <td class='text-center'><?= $row['transaction_id'] ?></td>
+                                        <td class='text-center'><?= $row['to_reference'] ?></td>
+                                        <td class='text-center'><?= $row['hauler'] ?></td>
+                                        <td class='text-center'><?= $row['plate_number'] ?></td>
+                                        <td class='text-center'><?= $row['driver_name'] ?></td>
+                                        <td class='text-center'><?= $row['project'] ?></td>
+                                        <td class='text-center'>
+                                            <button class='btn btn-primary px-2 add-to-queue' data-id="<?= $row['transaction_id'] ?>" data-plate="<?= $row['plate_number'] ?>">
+                                                Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                            <?php
+                                }
+                            } else {
+                                echo "<tr><td colspan='7'><center><h2 class='text-muted'>No Record</h2></center></td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="container shadow-sm p-5 mb-5 bg-body rounded">
+                    <h2 class="display-5 text-center mb-3">Queue</h2>
+                    <table class="table table-hover table-bordered text-center" id="queue-table">
+                        <thead>
+                            <tr>
+                                <th class="text-center" scope="col">Plate Number</th>
+                            </tr>
+                        </thead>
+                        <tbody id="queue-data">
+                            <!-- Queue items will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to add item to queue
+            function addToQueue(id, plateNumber) {
+                // Check if the item is already in the queue
+                if ($('#queue-data').find(`[data-id="${id}"]`).length === 0) {
+                    $('#queue-data').append(`
+                <tr data-id="${id}">
+                    <td class="text-center">${plateNumber}</td>
+                </tr>
+            `);
+                    // Disable the "Add" button for this item
+                    $(`button[data-id="${id}"]`).prop('disabled', true).text('Added');
+                }
+            }
+
+            // Event listener for "Add to Queue" buttons
+            $(document).on('click', '.add-to-queue', function() {
+                var id = $(this).data('id');
+                var plateNumber = $(this).data('plate');
+                addToQueue(id, plateNumber);
+            });
+        });
+    </script>
+</body>
+
+</html>

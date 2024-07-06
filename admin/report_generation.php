@@ -1,3 +1,6 @@
+<?php
+require '../api/db_connection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,88 +16,76 @@
 </head>
 
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-3">
-        <button class="btn btn-dark" id="sidebarToggle">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="">Integrated In-house Vehicle Management System</a>
-        <div class="collapse navbar-collapse justify-content-end">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button class="btn btn-primary float-end" type="button" onclick="logout_user()">
-                        Logout
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="sidebar" id="sidebar">
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; height: 100svh">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-
-                    <a href="index.php" class="nav-link text-white">
-                        <i class="fa-solid fa-chart-line fa-lg me-2" style="color: #ffffff;"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="user_mgmt.php" class="nav-link text-white">
-                        <i class="fa-solid fa-users fa-lg me-2" style="color: #ffffff;"></i>
-                        Users
-                    </a>
-                </li>
-                <li>
-                    <a href="vehicle_profiles.php" class="nav-link text-white">
-                        <i class="fa-solid fa-truck fa-lg me-2" style="color: #ffffff;"></i>
-                        Vehicle Profiles
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="vehicleTransactionsDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#vehicleTransactionsSubmenu" aria-expanded="true">
-                        <i class="fa-solid fa-scroll fa-lg me-2" style="color: #ffffff;"></i>
-                        Vehicle Transactions
-                    </a>
-                    <div class="collapse show" id="vehicleTransactionsSubmenu">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
-                            <li><a href="add_transaction.php" class="nav-link text-white"><i class="fa-solid fa-circle fa-2xs me-2" style="color: #6f6f6f;"></i>Add Transaction</a></li>
-                            <li><a href="view_transaction.php" class="nav-link text-white"><i class="fa-solid fa-circle fa-2xs me-2" style="color: #6f6f6f;"></i>View Transactions</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="report_generation.php" class="nav-link active" aria-current="page">
-                        <i class="fa-solid fa-print fa-lg me-2" style="color: #ffffff;"></i>
-                        Report Generation
-                    </a>
-                </li>
-                <li>
-                    <a href="admin.php" class="nav-link text-white">
-                        <i class="fa-solid fa-user-tie fa-xl me-2"></i> Administrator
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <?php
+    include_once('./navbar/navbar.php');
+    ?>
 
 
     <div class="content" id="content">
-        <h1>Welcome to the website!</h1>
-        <p>Click the button at the top left to toggle the sidebar.</p>
+        <div class="container w-75 shadow-sm p-5 mb-5 bg-body rounded">
+            <h2 class="display-3 text-center">Report Generation</h2>
+        </div>
+        <div class="container w-75 shadow-sm p-5 mb-5 bg-body rounded">
+
+            <div class="row">
+                <div class="col-sm">
+                    <h2 class="display-5 text-center">Tally In (Posted)</h2>
+                    <button class="btn btn-success float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-user-modal">
+                        Export to Excel
+                    </button>
+                    <table class="table table-hover table-bordered text-center" id="transactions-table">
+                        <thead>
+                            <tr>
+                                <th class="text-center" scope="col" style="width: 5%;">ID</th>
+                                <th class="text-center" scope="col" style="width: 15%;">To Reference</th>
+                                <th class="text-center" scope="col" style="width: 15%;">Hauler</th>
+                                <th class="text-center" scope="col" style="width: 15%;">Plate Number</th>
+                                <th class="text-center" scope="col" style="width: 15%;">Driver Name</th>
+                                <th class="text-center" scope="col" style="width: 15%;">Project</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-data">
+                            <?php
+                            $sql = "SELECT *    FROM Transaction t";
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                            ?>
+                                    <tr>
+                                        <td class='text-center'><?= $row['transaction_id'] ?></td>
+                                        <td class='text-center'><?= $row['to_reference'] ?></td>
+                                        <td class='text-center'><?= $row['hauler'] ?></td>
+                                        <td class='text-center'><?= $row['plate_number'] ?></td>
+                                        <td class='text-center'><?= $row['driver_name'] ?></td>
+                                        <td class='text-center'><?= $row['project'] ?></td>
+                                    </tr>
+                                <?php
+                                }
+                            } else {
+                                ?>
+                                <tr>
+                                    <td colspan='22'>
+                                        <center>
+                                            <h2 class='text-muted'>No Record</h2>
+                                        </center>
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
-    <script src="admin.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#users-table').DataTable({
-                "pageLength": 5,
-                "lengthChange": false,
-            });
-        });
-    </script>
+    <script src="js/admin.js"></script>
+
 </body>
 
 </html>

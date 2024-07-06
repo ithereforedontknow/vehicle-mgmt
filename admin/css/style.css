@@ -3,14 +3,13 @@ body {
   padding-top: 56px;
   font-family: "Lato", sans-serif;
 }
-
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   width: 280px;
-  background-color: #343a40;
+  background-color: #1b3667;
   transition: all 0.3s;
   padding-top: 56px;
 }
@@ -24,9 +23,12 @@ body {
   padding: 15px 20px; /* Increase padding for larger buttons */
   transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
 }
-
+.sidebar .nav-link.active {
+  background-color: #15294e;
+  color: #ffffff;
+}
 .sidebar .nav-link:hover {
-  background-color: #495057;
+  background-color: #15294e;
   color: #ffffff;
 }
 
@@ -45,4 +47,30 @@ body {
 
 .dropdown-toggle.collapsed::after {
   transform: rotate(180deg);
+}
+.card {
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.card-text {
+  color: #007bff;
+  font-weight: bold;
+}
+
+h2 {
+  color: #6c757d;
 }

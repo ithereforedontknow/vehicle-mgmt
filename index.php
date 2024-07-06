@@ -17,8 +17,8 @@
         <h1 class="h2 mb-3 fw-normal text-center">Please sign in</h1>
         <form id="login">
           <div class="form-floating mb-2 mt-2">
-            <input type="text" class="form-control form-control-lg shadow-sm" id="id" name="id" autocomplete="off" placeholder="ID" required />
-            <label for="id">ID</label>
+            <input type="text" class="form-control form-control-lg shadow-sm" id="username" name="username" autocomplete="off" placeholder="JohnDoe" required />
+            <label for="username">Username</label>
           </div>
           <div class="form-floating mb-2">
             <input type="password" class="form-control form-control-lg shadow-sm" id="password" name="password" placeholder="Password" required />
@@ -43,6 +43,8 @@
           window.location.href = "./admin/index.php";
         } else if (data === "tech assoc") {
           window.location.href = "./staff/index.php";
+        } else if (data === "encoder") {
+          window.location.href = "./encoder/index.php";
         } else {
           alert(data); // Show the error message
         }

@@ -3,15 +3,16 @@ session_start();
 require 'db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST['id'];
+
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if (!$id) {
+    if (!$username) {
         die("Invalid username");
     }
 
     // Check user credentials
-    $sql = "SELECT * FROM tbl_user WHERE id ='$id'";
+    $sql = "SELECT * FROM tbl_user WHERE username ='$username'";
     $result = $conn->query($sql);
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
@@ -22,19 +23,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "admin";
                 } elseif ($_SESSION['userlevel'] == 'tech assoc') {
                     echo "tech assoc";
+                } elseif ($_SESSION['userlevel'] == 'encoder') {
+                    echo "encoder";
                 } else {
                     echo "no userlevel";
                 }
             } else {
                 echo "Account is deactivated";
             }
-            $_SESSION['id'] = $id;
+            $_SESSION['username'] = $username;
             // echo "Login successful";
         } else {
             echo "Invalid password";
         }
     } else {
-        echo "No user found with that ID";
+        echo "No user found with that username";
     }
 
     $conn->close();

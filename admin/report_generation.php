@@ -47,7 +47,11 @@ require '../api/db_connection.php';
                         </thead>
                         <tbody id="transaction-data">
                             <?php
-                            $sql = "SELECT *    FROM Transaction t";
+                            $sql = "SELECT * FROM Transaction t INNER JOIN hauler h 
+                            ON t.hauler_id = h.hauler_id inner join vehicle v on 
+                            t.vehicle_id = v.vehicle_id inner join driver d on 
+                            t.driver_id = d.driver_id inner join project p on 
+                            t.project_id = p.project_id";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
@@ -55,10 +59,10 @@ require '../api/db_connection.php';
                                     <tr>
                                         <td class='text-center'><?= $row['transaction_id'] ?></td>
                                         <td class='text-center'><?= $row['to_reference'] ?></td>
-                                        <td class='text-center'><?= $row['hauler'] ?></td>
+                                        <td class='text-center'><?= $row['hauler_name'] ?></td>
                                         <td class='text-center'><?= $row['plate_number'] ?></td>
                                         <td class='text-center'><?= $row['driver_name'] ?></td>
-                                        <td class='text-center'><?= $row['project'] ?></td>
+                                        <td class='text-center'><?= $row['project_name'] ?></td>
                                     </tr>
                                 <?php
                                 }

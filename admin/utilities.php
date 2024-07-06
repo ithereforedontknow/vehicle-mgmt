@@ -22,8 +22,29 @@ require '../api/db_connection.php';
 
 
     <div class="content" id="content">
-
+        <div class="container mt-5">
+            <h2>Database Utilities</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Backup Database</h3>
+                    <form action="api/backup.php" method="post">
+                        <button type="submit" class="btn btn-primary">Create Backup</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <h3>Restore Database</h3>
+                    <form action="api/restore.php" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="backupFile" class="form-label">Select Backup File</label>
+                            <input type="file" class="form-control" id="backupFile" name="backupFile" accept=".sql" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Restore Backup</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>

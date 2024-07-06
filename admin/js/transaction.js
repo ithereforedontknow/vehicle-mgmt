@@ -66,7 +66,7 @@ function done_transaction(transaction_id) {
     },
     success: function (data) {
       window.location.reload();
-      alert(data);
+      console.log(data);
     },
   });
 }
@@ -81,7 +81,7 @@ function ongoing_transaction(transaction_id) {
     },
     success: function (data) {
       window.location.reload();
-      alert(data);
+      console.log(data);
     },
   });
 }

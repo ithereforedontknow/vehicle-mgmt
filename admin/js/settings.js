@@ -78,3 +78,17 @@ $("#add-project").submit((e) => {
     },
   });
 });
+$(document).ready(function () {
+  $("#hauler-table").DataTable({
+    pageLength: 5,
+  });
+  $("#vehicle-table").DataTable({
+    pageLength: 5,
+  });
+  $("#driver-table").DataTable({
+    pageLength: 5,
+  });
+  $("#project-table").DataTable({
+    pageLength: 5,
+  });
+});

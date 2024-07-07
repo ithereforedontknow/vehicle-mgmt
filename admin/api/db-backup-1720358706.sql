@@ -17,7 +17,7 @@ CREATE TABLE `hauler` (
   `hauler_id` int(11) NOT NULL AUTO_INCREMENT,
   `hauler_name` varchar(255) NOT NULL,
   PRIMARY KEY (`hauler_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO hauler VALUES("1","hauler1");
 INSERT INTO hauler VALUES("2","hauler");
@@ -25,6 +25,7 @@ INSERT INTO hauler VALUES("3","123");
 INSERT INTO hauler VALUES("4","122");
 INSERT INTO hauler VALUES("5","1231");
 INSERT INTO hauler VALUES("6","5555");
+INSERT INTO hauler VALUES("7","455456");
 
 
 
@@ -129,9 +130,10 @@ CREATE TABLE `vehicle` (
   `plate_number` varchar(50) NOT NULL,
   `truck_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`vehicle_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO vehicle VALUES("3","1234","trailer");
+INSERT INTO vehicle VALUES("4","4545","4545");
 
 
 

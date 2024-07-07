@@ -130,7 +130,7 @@ require '../api/db_connection.php';
                     <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-project-modal">
                         <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add
                     </button>
-                    <table class="table table-hover table-bordered text-center" id="driver-table">
+                    <table class="table table-hover table-bordered text-center" id="project-table">
                         <thead>
                             <th class="text-center" scope="col">Project</th>
                             <th class="text-center" scope="col">Action</th>
@@ -167,6 +167,7 @@ require '../api/db_connection.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/settings.js"></script>
 

@@ -1,20 +1,30 @@
+<?php
+session_start();
+if (isset($_SESSION['id'])) {
+  header("location: admin/index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign in</title>
+  <title>Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <!-- link to favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/Untitled-1.png" />
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body class="bg-light">
+  <div class="text-center">
+    <img class="" src="assets/ULPI_BLUE (1).png" alt="" width="400" />
+  </div>
   <main class="form-signin w-100 m-auto">
     <div class="container ">
       <div class="text-center">
-        <img class="mb-4 text-center" src="assets/universal_corporation_logo.jpg" alt="" width="250" />
-        <h1 class="h2 mb-3 fw-normal text-center">Please sign in</h1>
+        <h1 class="h2 mb-3 fw-normal text-center"></h1>
         <form id="login">
           <div class="form-floating mb-2 mt-2">
             <input type="text" class="form-control form-control-lg shadow-sm" id="username" name="username" autocomplete="off" placeholder="JohnDoe" required />
@@ -25,7 +35,7 @@
             <label for="password">Password</label>
           </div>
           <button class="btn btn-primary w-100 py-3 fs-5" type="button" onclick="login_user()">
-            Sign in
+            Login
           </button>
         </form>
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2024</p>

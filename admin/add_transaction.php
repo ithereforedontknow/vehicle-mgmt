@@ -1,5 +1,17 @@
 <?php
 require '../api/db_connection.php';
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("location: ../index.php");
+}
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
+
+    if ($_SESSION['userlevel'] == 'tech assoc') {
+        header("location: ../staff/index.php");
+    } elseif ($_SESSION['userlevel'] == 'encoder') {
+        header("location: ../encoder/index.php");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +25,7 @@ require '../api/db_connection.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-
+    <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
     <link rel="stylesheet" href="./css/style.css" />
 </head>
 

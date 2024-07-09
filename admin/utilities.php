@@ -1,5 +1,17 @@
 <?php
 require '../api/db_connection.php';
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("location: ../index.php");
+}
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
+
+    if ($_SESSION['userlevel'] == 'tech assoc') {
+        header("location: ../staff/index.php");
+    } elseif ($_SESSION['userlevel'] == 'encoder') {
+        header("location: ../encoder/index.php");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +24,7 @@ require '../api/db_connection.php';
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="./css/style.css">
-
+    <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
 </head>
 
 <body class="bg-light">

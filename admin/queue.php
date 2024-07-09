@@ -1,5 +1,17 @@
 <?php
 require '../api/db_connection.php';
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("location: ../index.php");
+}
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
+
+    if ($_SESSION['userlevel'] == 'tech assoc') {
+        header("location: ../staff/index.php");
+    } elseif ($_SESSION['userlevel'] == 'encoder') {
+        header("location: ../encoder/index.php");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +21,7 @@ require '../api/db_connection.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Queue Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-
+    <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="./css/style.css">
 
@@ -31,7 +43,11 @@ require '../api/db_connection.php';
                         <!-- ... (table head remains the same) ... -->
                         <tbody id="transaction-data">
                             <?php
-                            $sql = "SELECT * FROM Transaction t";
+                            $sql = "SELECT t.transaction_id, t.to_reference, h.hauler_name AS hauler, v.plate_number, v.truck_type, d.driver_name, p.project_name AS project, t.status, t.transfer_in_line, t.ordinal, t.shift, t.schedule, t.no_of_bales, t.kilos, t.origin, t.arrival_date, t.arrival_time, t.unloading_date, t.time_of_entry, t.unloading_time_start, t.unloading_time_end, t.time_of_departure FROM Transaction t 
+        INNER JOIN hauler h ON t.hauler_id = h.hauler_id 
+        INNER JOIN vehicle v ON t.vehicle_id = v.vehicle_id 
+        INNER JOIN driver d ON t.driver_id = d.driver_id 
+        INNER JOIN project p ON t.project_id = p.project_id";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {

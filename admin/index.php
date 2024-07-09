@@ -1,23 +1,37 @@
 <?php
 require '../api/db_connection.php';
+session_start();
+if (!isset($_SESSION['id'])) {
+  header("location: ../index.php");
+}
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
+
+  if ($_SESSION['userlevel'] == 'tech assoc') {
+    header("location: ../staff/index.php");
+  } elseif ($_SESSION['userlevel'] == 'encoder') {
+    header("location: ../encoder/index.php");
+  }
+}
+// $id = $_SESSION['id'];
+// // $query = $conn->query("SELECT  FROM tbl_user WHERE id = '$id'");
+// $name = $query->fetchColumn();
 
 // Get total number of transactions for the current day
-$sql_total = "SELECT COUNT(*) as total FROM Transaction WHERE DATE(arrival_date) = CURDATE()";
+$sql_total = "SELECT COUNT(*) as total FROM Transaction WHERE DATE(time_of_entry) = CURDATE()";
 $result_total = $conn->query($sql_total);
 $total_transactions = $result_total->fetch_assoc()['total'];
 
-// The rest of your queries remain the same
-$sql_month = "SELECT COUNT(*) as month_total FROM Transaction WHERE MONTH(arrival_date) = MONTH(CURRENT_DATE()) AND YEAR(arrival_date) = YEAR(CURRENT_DATE())";
+// Get total number of transactions for the current month
+$sql_month = "SELECT COUNT(*) as month_total FROM Transaction WHERE MONTH(time_of_entry) = MONTH(CURRENT_DATE()) AND YEAR(time_of_entry) = YEAR(CURRENT_DATE())";
 $result_month = $conn->query($sql_month);
 $month_transactions = $result_month->fetch_assoc()['month_total'];
 
-$sql_year = "SELECT COUNT(*) as year_total FROM Transaction WHERE YEAR(arrival_date) = YEAR(CURRENT_DATE())";
+// Get total number of transactions for the current year
+$sql_year = "SELECT COUNT(*) as year_total FROM Transaction WHERE YEAR(time_of_entry) = YEAR(CURRENT_DATE())";
 $result_year = $conn->query($sql_year);
 $year_transactions = $result_year->fetch_assoc()['year_total'];
 ?>
 <!DOCTYPE html>
-
-
 <html lang="en">
 
 <head>
@@ -26,9 +40,7 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
   <title>Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <link rel="stylesheet" href="./css/style.css">
-  <style>
-
-  </style>
+  <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
 </head>
 
 <body class="bg-light">

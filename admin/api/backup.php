@@ -46,7 +46,7 @@ function backupDatabase($host, $user, $pass, $dbname, $tables = '*')
         $output .= "\n\n\n";
     }
 
-    $backupFileName = 'db-backup-' . time() . '.sql';
+    $backupFileName = 'backups/db-backup-' . time() . '.sql';
     $file = fopen($backupFileName, 'w+');
     fwrite($file, $output);
     fclose($file);

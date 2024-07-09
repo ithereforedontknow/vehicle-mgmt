@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Account is deactivated";
             }
             $_SESSION['username'] = $username;
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['userlevel'] = $row['userlevel'];
+
             // echo "Login successful";
         } else {
             echo "Invalid password";

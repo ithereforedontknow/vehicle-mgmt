@@ -13,8 +13,8 @@ $("#add-transaction").submit(function (event) {
   const kilos = $("#kilos").val();
   const origin = $("#origin").val();
   const arrivalDate = $("#arrival-date").val();
-  const arrivalTime = $("#arrival-time").val();
   const backlog = $("#backlog").val();
+  const arrivalTime = $("#arrival-time").val();
   const unloadingDate = $("#unloading-date").val();
   const timeOfEntry = $("#time-of-entry").val();
   const unloadingTimeStart = $("#unloading-time-start").val();
@@ -48,9 +48,9 @@ $("#add-transaction").submit(function (event) {
     },
     success: function (data) {
       if (data === "Transaction added successfully") {
-        console.log(data);
+        alert(data);
       } else {
-        console.log(data);
+        alert(data);
       }
     },
   });

@@ -37,7 +37,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
         <div class="row">
             <div class="col-sm">
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">
-                    <h2 class="display-5 text-center">Add Hauler</h2>
+                    <h2 class="display-5 text-center">Manage Hauler</h2>
                     <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-hauler-modal">
                         <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add
                     </button>
@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
             </div>
             <div class="col-sm">
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">
-                    <h2 class="display-5 text-center">Add Vehicle</h2>
+                    <h2 class="display-5 text-center">Manage Vehicle</h2>
                     <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-vehicle-modal">
                         <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add
                     </button>
@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
         <div class="row">
             <div class="col-sm">
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">
-                    <h2 class="display-5 text-center">Add Driver</h2>
+                    <h2 class="display-5 text-center">Manage Driver</h2>
                     <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-driver-modal">
                         <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add
                     </button>
@@ -138,7 +138,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
             </div>
             <div class="col-sm">
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">
-                    <h2 class="display-5 text-center">Add Project</h2>
+                    <h2 class="display-5 text-center">Manage Project</h2>
                     <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-project-modal">
                         <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add
                     </button>

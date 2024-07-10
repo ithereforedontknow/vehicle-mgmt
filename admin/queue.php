@@ -40,14 +40,23 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">
                     <h2 class="display-5 text-center mb-3">Add to Queue</h2>
                     <table class="table table-hover table-bordered text-center" id="transactions-table">
-                        <!-- ... (table head remains the same) ... -->
+                        <thead>
+                            <th class="text-center" scope="col">Transaction ID</th>
+                            <th class="text-center" scope="col">To Reference</th>
+                            <th class="text-center" scope="col">Hauler</th>
+                            <th class="text-center" scope="col">Plate Number</th>
+                            <th class="text-center" scope="col">Driver</th>
+                            <th class="text-center" scope="col">Project</th>
+                            <th class="text-center" scope="col">Action</th>
+                        </thead>
+
                         <tbody id="transaction-data">
                             <?php
                             $sql = "SELECT t.transaction_id, t.to_reference, h.hauler_name AS hauler, v.plate_number, v.truck_type, d.driver_name, p.project_name AS project, t.status, t.transfer_in_line, t.ordinal, t.shift, t.schedule, t.no_of_bales, t.kilos, t.origin, t.arrival_date, t.arrival_time, t.unloading_date, t.time_of_entry, t.unloading_time_start, t.unloading_time_end, t.time_of_departure FROM Transaction t 
-        INNER JOIN hauler h ON t.hauler_id = h.hauler_id 
-        INNER JOIN vehicle v ON t.vehicle_id = v.vehicle_id 
-        INNER JOIN driver d ON t.driver_id = d.driver_id 
-        INNER JOIN project p ON t.project_id = p.project_id";
+                            INNER JOIN hauler h ON t.hauler_id = h.hauler_id 
+                            INNER JOIN vehicle v ON t.vehicle_id = v.vehicle_id 
+                            INNER JOIN driver d ON t.driver_id = d.driver_id 
+                            INNER JOIN project p ON t.project_id = p.project_id";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
@@ -94,10 +103,13 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
     <script src="js/admin.js"></script>
     <script>
         $(document).ready(function() {
+            // transactions-table to datatable
+            $('#transactions-table').DataTable();
             // Function to add item to queue
             function addToQueue(id, plateNumber) {
                 // Check if the item is already in the queue

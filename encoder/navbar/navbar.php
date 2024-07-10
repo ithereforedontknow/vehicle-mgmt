@@ -48,12 +48,6 @@
                 </div>
             </li>
 
-            <li>
-                <a href="report_generation.php" class="nav-link text-white">
-                    <i class="fa-solid fa-print fa-lg me-2"></i>
-                    Report Generation
-                </a>
-            </li>
 
             <li>
                 <a href="help.php" class="nav-link text-white">

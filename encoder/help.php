@@ -55,16 +55,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'encoder') {
             </div>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-body p-5">
-                <h2 class="card-title display-5 mb-3">Report Generation</h2>
-                <ul>
-                    <li> This section allows you to export vehicle transaction data to an Excel file for further analysis or record keeping.</li>
-                    <li> Specific instructions on generating reports will be available within the report generation section itself.</li>
-                </ul>
 
-            </div>
-        </div>
 
     </div>
 

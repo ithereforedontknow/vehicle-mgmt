@@ -34,7 +34,6 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
 
     <div class="content" id="content">
-        <h2 class="display-3 text-center">Queue</h2>
         <div class="row">
             <div class="col-sm">
                 <div class="container shadow-sm p-5 mb-5 bg-body rounded">

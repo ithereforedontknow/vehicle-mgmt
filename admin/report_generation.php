@@ -42,7 +42,20 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
             <div class="row">
                 <div class="col-sm">
                     <h2 class="display-5 text-center">Tally In (Posted)</h2>
-                    <button id="export-excel" class="btn btn-success float-end mb-2">
+
+                    <button id="export-excel-day" class="btn btn-success float-end mb-2 ms-2">
+                        Day
+                    </button>
+
+                    <button id="export-excel-month" class="btn btn-success float-end mb-2 ms-2">
+                        Month
+                    </button>
+
+                    <button id="export-excel-year" class="btn btn-success float-end mb-2 ms-2">
+                        Year
+                    </button>
+
+                    <button id="export-excel" class="btn btn-success float-end mb-2 ms-2">
                         Export to Excel
                     </button>
                     <table class="table table-hover table-bordered text-center" id="transactions-table">
@@ -60,10 +73,10 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                         <tbody id="transaction-data">
                             <?php
                             $sql = "SELECT * FROM Transaction t INNER JOIN hauler h 
-                            ON t.hauler_id = h.hauler_id inner join vehicle v on 
-                            t.vehicle_id = v.vehicle_id inner join driver d on 
-                            t.driver_id = d.driver_id inner join project p on 
-                            t.project_id = p.project_id";
+                        ON t.hauler_id = h.hauler_id inner join vehicle v on 
+                        t.vehicle_id = v.vehicle_id inner join driver d on 
+                        t.driver_id = d.driver_id inner join project p on 
+                        t.project_id = p.project_id";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {

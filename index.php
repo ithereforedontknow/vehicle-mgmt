@@ -54,7 +54,7 @@ if (isset($_SESSION['id'])) {
         } else if (data === "tech assoc") {
           window.location.href = "./staff/index.php";
         } else if (data === "encoder") {
-          window.location.href = "./encoder/index.php";
+          window.location.href = "./encoder/add_transaction.php";
         } else {
           alert(data); // Show the error message
         }

@@ -40,6 +40,11 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                 <div class="col-md-6">
                     <h3>Backup Database</h3>
                     <form action="api/backup.php" method="post">
+                        <div class="mb-3">
+                            <label for="backupPath" class="form-label">Backup Folder Path</label>
+                            <input type="text" class="form-control" id="backupPath" name="backupPath" readonly>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="browseButton">Browse</button>
                         <button type="submit" class="btn btn-primary">Create Backup</button>
                     </form>
                 </div>
@@ -61,6 +66,22 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
     <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const backupPath = document.getElementById('backupPath');
+            const browseButton = document.getElementById('browseButton');
+
+            browseButton.addEventListener('click', function() {
+                window.showDirectoryPicker().then(function(directoryHandle) {
+                    backupPath.value = directoryHandle.name;
+                    // Store the directory handle for later use
+                    backupPath.directoryHandle = directoryHandle;
+                }).catch(function(err) {
+                    console.error('Error selecting directory:', err);
+                });
+            });
+        });
+    </script>
 
 </body>
 

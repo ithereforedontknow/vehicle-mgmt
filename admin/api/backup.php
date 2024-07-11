@@ -1,58 +1,43 @@
 <?php
-require '../api/db_connection.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['backupPath']) && !empty($_POST['backupPath'])) {
+        $backupDir = $_POST['backupPath'];
 
-function backupDatabase($host, $user, $pass, $dbname, $tables = '*')
-{
-    $conn = new mysqli($host, $user, $pass, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+        // Generate a unique filename for the backup
+        $backupFile = $backupDir . DIRECTORY_SEPARATOR . 'backup_' . date('Y-m-d_H-i-s') . '.sql';
 
-    if ($tables == '*') {
-        $tables = array();
-        $result = $conn->query("SHOW TABLES");
-        while ($row = $result->fetch_row()) {
-            $tables[] = $row[0];
+        // Your database credentials
+        $dbHost = 'localhost';
+        $dbUser = 'root';
+        $dbPass = '';
+        $dbName = 'db_inhouse_vehicle';
+
+        // Full path to mysqldump (adjust this as needed)
+        $mysqldump = '/usr/bin/mysqldump';
+
+        // Backup command
+        $command = escapeshellcmd("$mysqldump --opt -h $dbHost -u $dbUser -p$dbPass $dbName > \"$backupFile\" 2>&1");
+
+        // Execute the backup command
+        exec($command, $output, $returnVar);
+
+        if ($returnVar === 0) {
+            echo "Backup created successfully: $backupFile";
+        } else {
+            echo "Backup failed. Error details:<br>";
+            echo "Return code: $returnVar<br>";
+            echo "Error output:<br>" . implode("<br>", $output);
+
+            // Additional debugging information
+            echo "<br><br>Debug info:<br>";
+            echo "Backup directory: $backupDir<br>";
+            echo "PHP version: " . phpversion() . "<br>";
+            echo "Web server user: " . exec('whoami') . "<br>";
+            echo "Directory writable: " . (is_writable($backupDir) ? 'Yes' : 'No') . "<br>";
         }
     } else {
-        $tables = is_array($tables) ? $tables : explode(',', $tables);
+        echo "No backup path provided.";
     }
-
-    $output = '';
-    foreach ($tables as $table) {
-        $result = $conn->query("SELECT * FROM $table");
-        $numFields = $result->field_count;
-
-        $output .= "DROP TABLE IF EXISTS $table;";
-        $row2 = $conn->query("SHOW CREATE TABLE $table")->fetch_row();
-        $output .= "\n\n" . $row2[1] . ";\n\n";
-
-        while ($row = $result->fetch_row()) {
-            $output .= "INSERT INTO $table VALUES(";
-            for ($j = 0; $j < $numFields; $j++) {
-                $row[$j] = addslashes($row[$j]);
-                $row[$j] = preg_replace("/\n/", "\\n", $row[$j]);
-                if (isset($row[$j])) {
-                    $output .= '"' . $row[$j] . '"';
-                } else {
-                    $output .= '""';
-                }
-                if ($j < ($numFields - 1)) {
-                    $output .= ',';
-                }
-            }
-            $output .= ");\n";
-        }
-        $output .= "\n\n\n";
-    }
-
-    $backupFileName = 'backups/db-backup-' . time() . '.sql';
-    $file = fopen($backupFileName, 'w+');
-    fwrite($file, $output);
-    fclose($file);
-
-    echo "Backup created successfully. File name: " . $backupFileName;
+} else {
+    echo "Invalid request method.";
 }
-
-// Call the function with your database credentials
-backupDatabase('localhost', 'root', '', 'db_inhouse_vehicle');

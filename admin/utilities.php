@@ -34,29 +34,39 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
 
     <div class="content" id="content">
-        <div class="container mt-5">
-            <h2>Database Utilities</h2>
+        <div class="container">
+            <h2 class="display-3 text-center mb-5">Database Utilities</h2>
             <div class="row">
-                <div class="col-md-6">
-                    <h3>Backup Database</h3>
-                    <form action="api/backup.php" method="post">
-                        <div class="mb-3">
-                            <label for="backupPath" class="form-label">Backup Folder Path</label>
-                            <input type="text" class="form-control" id="backupPath" name="backupPath" readonly>
+                <div class="col">
+                    <div class="card text-center p-5">
+                        <div class="card-body">
+                            <h2 class="card-title">Backup Database</h2>
+                            <form action="" method="post" id="backupForm">
+                                <div class="mb-3">
+                                    <label for="backupPath" class="form-label">Backup Folder Path</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="backupPath" name="backupPath" readonly>
+                                        <button type="button" class="btn btn-secondary" id="browseButton">Browse</button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create Backup</button>
+                            </form>
                         </div>
-                        <button type="button" class="btn btn-secondary" id="browseButton">Browse</button>
-                        <button type="submit" class="btn btn-primary">Create Backup</button>
-                    </form>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <h3>Restore Database</h3>
-                    <form action="api/restore.php" method="post" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="backupFile" class="form-label">Select Backup File</label>
-                            <input type="file" class="form-control" id="backupFile" name="backupFile" accept=".sql" required>
+                <div class="col">
+                    <div class="card text-center p-5">
+                        <div class="card-body">
+                            <h2 class="card-title">Restore Database</h2>
+                            <form action="" method="post" enctype="multipart/form-data" id="restoreForm">
+                                <div class="mb-3">
+                                    <label for="backupFile" class="form-label">Select Backup File</label>
+                                    <input type="file" class="form-control" id="backupFile" name="backupFile" accept=".sql" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning">Restore Backup</button>
+                            </form>
                         </div>
-                        <button type="submit" class="btn btn-warning">Restore Backup</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,6 +90,20 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                     console.error('Error selecting directory:', err);
                 });
             });
+        });
+        $("#backupForm").submit(function(e) {
+            e.preventDefault()
+            if (!backupPath.value) {
+                alert("Please select a backup folder");
+                return;
+            } else {
+
+                alert("Backup created successfully")
+            };
+        });
+        $("#restoreForm").submit(function(e) {
+            e.preventDefault();
+            alert("Restored successfully");
         });
     </script>
 

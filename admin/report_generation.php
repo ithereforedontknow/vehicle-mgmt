@@ -42,9 +42,13 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
             <h2 class="display-5 text-center">Tally In (Posted)</h2>
 
             <!-- Export to Excel Dropdown -->
+            <button id="export-excel" class="btn btn-primary float-end ms-2">
+                Export to Excel
+            </button>
+
             <div class="btn-group float-end mb-2 ms-2">
-                <button id="export-excel" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Export to Excel
+                <button id="" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select date
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#" data-type="day">Day</a>

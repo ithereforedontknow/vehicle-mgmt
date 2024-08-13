@@ -1,7 +1,18 @@
 <?php
+set_time_limit(300); // Set a 5-minute timeout
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['backupPath']) && !empty($_POST['backupPath'])) {
-        $backupDir = $_POST['backupPath'];
+        // Base directory for backups (adjust this to a directory where your web server has write access)
+        $baseDir = 'C:/xampp/htdocs/vehicle/api/backups';
+
+        // Combine base directory with user-selected directory
+        $backupDir = $baseDir . basename($_POST['backupPath']);
+
+        // Ensure the directory exists
+        if (!file_exists($backupDir)) {
+            mkdir($backupDir, 0777, true);
+        }
 
         // Generate a unique filename for the backup
         $backupFile = $backupDir . DIRECTORY_SEPARATOR . 'backup_' . date('Y-m-d_H-i-s') . '.sql';
@@ -12,28 +23,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dbPass = '';
         $dbName = 'db_inhouse_vehicle';
 
-        // Full path to mysqldump (adjust this as needed)
-        $mysqldump = '/usr/bin/mysqldump';
+        try {
+            // Connect to the database
+            $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Backup command
-        $command = escapeshellcmd("$mysqldump --opt -h $dbHost -u $dbUser -p$dbPass $dbName > \"$backupFile\" 2>&1");
+            // Open the backup file for writing
+            $file = fopen($backupFile, 'w');
 
-        // Execute the backup command
-        exec($command, $output, $returnVar);
+            if ($file === false) {
+                throw new Exception("Unable to open file for writing.");
+            }
 
-        if ($returnVar === 0) {
+            // Get all table names
+            $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($tables as $table) {
+                // Write table structure
+                $createTable = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC);
+                fwrite($file, $createTable['Create Table'] . ";\n\n");
+
+                // Write table data
+                $rows = $pdo->query("SELECT * FROM `$table`")->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($rows as $row) {
+                    $values = array_map(function ($value) use ($pdo) {
+                        return $value === null ? 'NULL' : $pdo->quote($value);
+                    }, $row);
+                    fwrite($file, "INSERT INTO `$table` VALUES (" . implode(", ", $values) . ");\n");
+                }
+                fwrite($file, "\n");
+            }
+
+            fclose($file);
             echo "Backup created successfully: $backupFile";
-        } else {
-            echo "Backup failed. Error details:<br>";
-            echo "Return code: $returnVar<br>";
-            echo "Error output:<br>" . implode("<br>", $output);
-
-            // Additional debugging information
-            echo "<br><br>Debug info:<br>";
-            echo "Backup directory: $backupDir<br>";
-            echo "PHP version: " . phpversion() . "<br>";
-            echo "Web server user: " . exec('whoami') . "<br>";
-            echo "Directory writable: " . (is_writable($backupDir) ? 'Yes' : 'No') . "<br>";
+        } catch (Exception $e) {
+            echo "Backup failed. Error: " . $e->getMessage();
         }
     } else {
         echo "No backup path provided.";

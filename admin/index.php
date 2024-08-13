@@ -50,10 +50,9 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
   ?>
 
   <div class="content" id="content">
-    <h2 class="display-3 text-center mb-3">Dashboard</h2>
     <div class="row mb-4">
-      <div class="col-md-4">
-        <div class="card text-center">
+      <div class="col">
+        <div class="card text-center" id="todayCard" style="cursor: pointer;">
           <div class="card-body">
             <h5 class="card-title">Transactions Today</h5>
             <p class="card-text display-4"><?php echo $total_transactions; ?></p>
@@ -61,30 +60,31 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
         </div>
       </div>
 
-
-
-      <div class="col-md-4">
-        <div class="card text-center">
+      <div class="col">
+        <div class="card text-center" id="monthCard" style="cursor: pointer;">
           <div class="card-body">
             <h5 class="card-title">Transactions This Month</h5>
             <p class="card-text display-4"><?php echo $month_transactions; ?></p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card text-center">
+
+      <div class="col">
+        <div class="card text-center" id="yearCard" style="cursor: pointer;">
           <div class="card-body">
             <h5 class="card-title">Transactions This Year</h5>
             <p class="card-text display-4"><?php echo $year_transactions; ?></p>
           </div>
         </div>
       </div>
+
     </div>
 
-    <div class="card text-center">
-
-      <div class="card-body">
-        <canvas id="transactionChart"></canvas>
+    <div class="d-flex justify-content-center">
+      <div class="card w-75">
+        <div class="card-body">
+          <canvas id="transactionChart"></canvas>
+        </div>
       </div>
     </div>
 
@@ -96,78 +96,134 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
     <script src="js/admin.js"></script>
     <script>
       // chart_script.js
-
       $(document).ready(function() {
-        $.ajax({
-          url: 'fetch_transaction_data.php',
-          type: 'GET',
-          dataType: 'json',
-          success: function(data) {
-            var ctx = document.getElementById('transactionChart').getContext('2d');
+        var chart;
 
-            var months = data.map(function(item) {
-              return item.year + '-' + item.month;
-            });
+        function updateChart(period) {
+          $.ajax({
+            url: 'fetch_transaction_data.php',
+            type: 'GET',
+            data: {
+              period: period
+            },
+            dataType: 'json',
+            success: function(data) {
+              var ctx = document.getElementById('transactionChart').getContext('2d');
 
-            var counts = data.map(function(item) {
-              return item.transaction_count;
-            });
+              var labels = data.map(function(item) {
+                return item.label;
+              });
 
-            var chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: months,
-                datasets: [{
-                  label: 'Number of Transactions',
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  borderColor: 'rgba(54, 162, 235, 1)',
-                  borderWidth: 2,
-                  pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                  pointBorderColor: '#fff',
-                  pointHoverBackgroundColor: '#fff',
-                  pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-                  data: counts,
-                  fill: true,
-                  tension: 0.4 // This creates a soft curve
-                }]
-              },
-              options: {
-                responsive: true,
-                plugins: {
-                  title: {
-                    display: true,
-                    text: 'Transaction Count by Month'
-                  }
+              var counts = data.map(function(item) {
+                return item.transaction_count;
+              });
+
+              if (chart) {
+                chart.destroy();
+              }
+
+              chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Number of Transactions',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                    data: counts,
+                    fill: true,
+                    tension: 0.4
+                  }]
                 },
-                scales: {
-                  x: {
-                    display: true,
+                options: {
+                  responsive: true,
+                  plugins: {
                     title: {
                       display: true,
-                      text: 'Month'
+                      text: 'Transaction Count - ' + period.charAt(0).toUpperCase() + period.slice(1),
+                      font: {
+                        size: 24
+                      },
+                      color: '#007bff' // Set title color to blue
                     },
-                    grid: {
-                      color: 'rgba(0, 0, 0, 0.1)' // Softer grid lines
+                    legend: {
+                      labels: {
+                        font: {
+                          size: 16
+                        }
+                      }
                     }
                   },
-                  y: {
-                    display: true,
-                    title: {
+                  scales: {
+                    x: {
                       display: true,
-                      text: 'Number of Transactions'
+                      title: {
+                        display: true,
+                        text: period === 'today' ? 'Hour' : (period === 'month' ? 'Day' : 'Month'),
+                        font: {
+                          size: 18
+                        },
+                        color: '#007bff' // Set title color to blue
+                      },
+                      grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                      },
+                      ticks: {
+                        font: {
+                          size: 14
+                        }
+                      }
                     },
-                    beginAtZero: true,
-                    grid: {
-                      color: 'rgba(0, 0, 0, 0.1)' // Softer grid lines
+                    y: {
+                      display: true,
+                      title: {
+                        display: true,
+                        text: 'Number of Transactions',
+                        font: {
+                          size: 18
+                        }
+                      },
+                      beginAtZero: true,
+                      grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                      },
+                      ticks: {
+                        font: {
+                          size: 14
+                        }
+                      }
                     }
                   }
                 }
-              }
-            });
-          },
-          error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-          }
+              });
+            },
+            error: function(xhr, status, error) {
+              console.error('Error fetching data:', error);
+            }
+          });
+        }
+
+        // The rest of your code remains unchanged
+
+        // Initial chart load
+        updateChart('year');
+
+        // Add click event listeners to the cards
+        $('#todayCard').click(function() {
+          updateChart('today');
+        });
+
+        $('#monthCard').click(function() {
+          updateChart('month');
+        });
+
+        $('#yearCard').click(function() {
+          updateChart('year');
         });
       });
     </script>

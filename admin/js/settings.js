@@ -43,6 +43,8 @@ $("#add-vehicle").submit((e) => {
 $("#add-driver").submit((e) => {
   e.preventDefault();
   const driverName = $("#driver-name").val();
+  // driver phone number
+  // const driverPhone = $("#driver-phone").val();
   $.ajax({
     url: "./api/add/add-driver.php",
     type: "POST",

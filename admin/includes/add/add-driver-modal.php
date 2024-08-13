@@ -11,6 +11,10 @@
                         <label for="driver-name">Driver Name</label>
                         <input type="text" class="form-control" id="driver-name" name="driver-name" required placeholder="">
                     </div>
+                    <div class="form-group mb-2">
+                        <label for="driver-phone">Phone Number</label>
+                        <input type="tel" class="form-control" id="driver-phone" name="driver-phone" required placeholder="09XXXXXXXX">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

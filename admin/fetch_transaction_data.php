@@ -1,21 +1,40 @@
 <?php
-require "../api/db_connection.php"; // Adjust path as per your directory structure
+require '../api/db_connection.php';
 
-// Query to fetch transaction counts per month, ordered by ascending year and month
-$sql = "SELECT YEAR(arrival_date) AS year, MONTH(arrival_date) AS month, COUNT(*) AS transaction_count
-        FROM Transaction
-        GROUP BY YEAR(arrival_date), MONTH(arrival_date)
-        ORDER BY year ASC, month ASC";
-$result = $conn->query($sql);
+$period = isset($_GET['period']) ? $_GET['period'] : 'year';
 
-$data = [];
-while ($row = $result->fetch_assoc()) {
-    $data[] = [
-        'year' => $row['year'],
-        'month' => $row['month'],
-        'transaction_count' => $row['transaction_count']
-    ];
+switch ($period) {
+    case 'today':
+        $sql = "SELECT HOUR(time_of_entry) as label, COUNT(*) as transaction_count 
+                FROM Transaction 
+                WHERE DATE(time_of_entry) = CURDATE() 
+                GROUP BY HOUR(time_of_entry) 
+                ORDER BY HOUR(time_of_entry)";
+        break;
+    case 'month':
+        $sql = "SELECT DAY(time_of_entry) as label, COUNT(*) as transaction_count 
+                FROM Transaction 
+                WHERE MONTH(time_of_entry) = MONTH(CURRENT_DATE()) 
+                AND YEAR(time_of_entry) = YEAR(CURRENT_DATE()) 
+                GROUP BY DAY(time_of_entry) 
+                ORDER BY DAY(time_of_entry)";
+        break;
+    case 'year':
+    default:
+        $sql = "SELECT CONCAT(YEAR(time_of_entry), '-', MONTH(time_of_entry)) as label, 
+                COUNT(*) as transaction_count 
+                FROM Transaction 
+                WHERE YEAR(time_of_entry) = YEAR(CURRENT_DATE()) 
+                GROUP BY YEAR(time_of_entry), MONTH(time_of_entry) 
+                ORDER BY YEAR(time_of_entry), MONTH(time_of_entry)";
+        break;
 }
 
-header('Content-Type: application/json');
+$result = $conn->query($sql);
+$data = array();
+
+while ($row = $result->fetch_assoc()) {
+    $data[] = $row;
+}
+
 echo json_encode($data);

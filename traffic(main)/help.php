@@ -4,12 +4,14 @@ session_start();
 if (!isset($_SESSION['id'])) {
     header("location: ../index.php");
 }
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(main)') {
 
     if ($_SESSION['userlevel'] == 'admin') {
         header("location: ../admin/index.php");
     } elseif ($_SESSION['userlevel'] == 'encoder') {
         header("location: ../encoder/index.php");
+    } else {
+        header("location: ../traffic(branch)/index.php");
     }
 }
 ?>

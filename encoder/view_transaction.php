@@ -8,8 +8,10 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'encoder') {
 
     if ($_SESSION['userlevel'] == 'admin') {
         header("location: ../admin/index.php");
-    } elseif ($_SESSION['userlevel'] == 'tech assoc') {
-        header("location: ../staff/index.php");
+    } elseif ($_SESSION['userlevel'] == 'traffic(main)') {
+        header("location: ../traffic(main)/index.php");
+    } else {
+        header("location: ../traffic(branch)/index.php");
     }
 }
 ?>

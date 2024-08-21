@@ -51,8 +51,10 @@ if (isset($_SESSION['id'])) {
         console.log(data);
         if (data === "admin") {
           window.location.href = "./admin/index.php";
-        } else if (data === "tech assoc") {
-          window.location.href = "./staff/index.php";
+        } else if (data === "traffic(main)") {
+          window.location.href = "./traffic(main)/index.php";
+        } else if (data === "traffic(branch)") {
+          window.location.href = "./traffic(branch)/index.php";
         } else if (data === "encoder") {
           window.location.href = "./encoder/add_transaction.php";
         } else {

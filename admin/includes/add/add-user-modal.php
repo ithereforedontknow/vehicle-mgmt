@@ -31,7 +31,8 @@
                         <label for="user-level">User level</label>
                         <select class="form-control" id="userlevel" name="userlevel" required>
                             <option value="admin">Admin</option>
-                            <option value="tech assoc">Technical Associate</option>
+                            <option value="traffic(main)">Traffic-in-Charge (Main)</option>
+                            <option value="traffic(branch)">Traffic-in-Charge (Branch)</option>
                             <option value="encoder">Encoder</option>
                         </select>
                     </div>

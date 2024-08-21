@@ -21,8 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($row['active'] == 1) {
                 if ($_SESSION['userlevel'] == 'admin') {
                     echo "admin";
-                } elseif ($_SESSION['userlevel'] == 'tech assoc') {
-                    echo "tech assoc";
+                } elseif ($_SESSION['userlevel'] == 'traffic(main)') {
+                    echo "traffic(main)";
+                } elseif ($_SESSION['userlevel'] == 'traffic(branch)') {
+                    echo "traffic(branch)";
                 } elseif ($_SESSION['userlevel'] == 'encoder') {
                     echo "encoder";
                 } else {

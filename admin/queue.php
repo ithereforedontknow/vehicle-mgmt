@@ -6,10 +6,12 @@ if (!isset($_SESSION['id'])) {
 }
 if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
-    if ($_SESSION['userlevel'] == 'tech assoc') {
-        header("location: ../staff/index.php");
+    if ($_SESSION['userlevel'] == 'traffic(main)') {
+        header("location: ../traffic(main)/index.php");
     } elseif ($_SESSION['userlevel'] == 'encoder') {
         header("location: ../encoder/index.php");
+    } elseif ($_SESSION['userlevel'] == 'traffic(branch)') {
+        header("location: ../traffic(branch)/index.php");
     }
 }
 ?>

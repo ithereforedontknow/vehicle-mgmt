@@ -4,12 +4,14 @@ session_start();
 if (!isset($_SESSION['id'])) {
     header("location: ../index.php");
 }
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
+if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(branch)') {
 
     if ($_SESSION['userlevel'] == 'admin') {
         header("location: ../admin/index.php");
-    } elseif ($_SESSION['userlevel'] == 'encoder') {
-        header("location: ../encoder/index.php");
+    } elseif ($_SESSION['userlevel'] == 'traffic(main)') {
+        header("location: ../traffic(main)/index.php");
+    } else {
+        header("location: ../traffic(branch)/index.php");
     }
 }
 ?>
@@ -180,11 +182,15 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'tech assoc') {
             </div>
         </div>
     </div>
+    <?php
+    include_once('help.php');
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
     <script src="js/admin.js"></script>
     <script src="js/transaction.js"></script>
+
 
 </body>
 

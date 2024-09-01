@@ -1,18 +1,12 @@
 <?php
-require '../api/db_connection.php';
-session_start();
-if (!isset($_SESSION['id'])) {
-    header("location: ../index.php");
-}
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
-    if ($_SESSION['userlevel'] == 'traffic(main)') {
-        header("location: ../traffic(main)/index.php");
-    } elseif ($_SESSION['userlevel'] == 'encoder') {
-        header("location: ../encoder/index.php");
-    } elseif ($_SESSION['userlevel'] == 'traffic(branch)') {
-        header("location: ../traffic(branch)/index.php");
-    }
+require_once '../api/db_connection.php';
+
+session_start();
+
+if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
+    header('Location: ../index.php');
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -30,10 +24,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 </head>
 
 <body class="bg-light">
-    <?php
-    include_once('./navbar/navbar.php');
-    ?>
-    <div class="content" id="content">
+    <div class="container">
         <label for="search">Search</label>
         <input type="text" class="form-control w-25 mb-3" name="search" id="search">
         <button class="btn btn-primary mb-3">User Manual</button>

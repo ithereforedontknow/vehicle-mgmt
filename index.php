@@ -12,7 +12,6 @@ if (isset($_SESSION['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-  <!-- link to favicon -->
   <link rel="icon" type="image/x-icon" href="assets/Untitled-1.png" />
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -25,7 +24,9 @@ if (isset($_SESSION['id'])) {
     <div class="container ">
       <div class="text-center">
         <h1 class="h2 mb-3 fw-normal text-center"></h1>
-        <form id="login">
+
+        <!-- Login Form -->
+        <form id="login_form">
           <div class="form-floating mb-2 mt-2">
             <input type="text" class="form-control form-control-lg shadow-sm" id="username" name="username" autocomplete="off" placeholder="JohnDoe" required />
             <label for="username">Username</label>
@@ -37,7 +38,12 @@ if (isset($_SESSION['id'])) {
           <button class="btn btn-primary w-100 py-3 fs-5" type="button" onclick="login_user()">
             Login
           </button>
+          <div class="mt-3">
+            <a href="forgot_password.php" class="text-decoration-none">Forgot Password?</a>
+          </div>
         </form>
+
+
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2024</p>
       </div>
     </div>
@@ -47,7 +53,7 @@ if (isset($_SESSION['id'])) {
 
   <script>
     function login_user() {
-      $.post("./api/login.php", $("#login").serialize(), function(data) {
+      $.post("./api/login.php", $("#login_form").serialize(), function(data) {
         console.log(data);
         if (data === "admin") {
           window.location.href = "./admin/index.php";
@@ -60,6 +66,12 @@ if (isset($_SESSION['id'])) {
         } else {
           alert(data); // Show the error message
         }
+      });
+    }
+
+    function reset_password() {
+      $.post("./api/forgot_password.php", $("#forgot_password_form").serialize(), function(data) {
+        alert(data); // Show the message (e.g., "Reset link sent to your email")
       });
     }
   </script>

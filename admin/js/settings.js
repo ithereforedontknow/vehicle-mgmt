@@ -1,11 +1,15 @@
 $("#add-hauler").submit((e) => {
   e.preventDefault();
-  const hauler = $("#hauler").val();
+  const haulerName = $("#hauler_name").val();
+  const haulerAddress = $("#hauler_address").val();
+  const haulerTypeTruck = $("#hauler_type_truck").val();
   $.ajax({
     url: "./api/add/add-hauler.php",
     type: "POST",
     data: {
-      hauler: hauler,
+      haulerName: haulerName,
+      haulerAddress: haulerAddress,
+      haulerTypeTruck: haulerTypeTruck,
     },
     success: function (data) {
       $("#add-hauler-modal").modal("hide");

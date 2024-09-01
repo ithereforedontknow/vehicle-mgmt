@@ -1,18 +1,12 @@
 <?php
-require '../api/db_connection.php';
-session_start();
-if (!isset($_SESSION['id'])) {
-  header("location: ../index.php");
-}
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
-  if ($_SESSION['userlevel'] == 'traffic(main)') {
-    header("location: ../traffic(main)/index.php");
-  } elseif ($_SESSION['userlevel'] == 'encoder') {
-    header("location: ../encoder/index.php");
-  } elseif ($_SESSION['userlevel'] == 'traffic(branch)') {
-    header("location: ../traffic(branch)/index.php");
-  }
+require_once '../api/db_connection.php';
+
+session_start();
+
+if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
+  header('Location: ../index.php');
+  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -31,35 +25,32 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 <body class="bg-light">
   <?php include_once('./navbar/navbar.php'); ?>
   <div class="content" id="content">
-    <div class="container shadow-sm p-3 mb-5 bg-body rounded">
-      <h2 class="display-3 text-center">User Management</h2>
-      <div class="container">
-        <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-user-modal">
-          <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add User
-        </button>
-        <label for="column-search">Search Name:</label>
-        <input type="text" class="form-control w-25 my-2" id="column-search" placeholder="John Doe">
-        <table class="table table-hover table-bordered text-center" id="users-table">
-          <thead>
-            <tr>
-              <th class="text-center" scope="col" style="width: 5%;">ID</th>
-              <th class="text-center" scope="col" style="width: 15%;">Name</th>
-              <th class="text-center" scope="col" style="width: 15%;">Username</th>
-              <th class="text-center" scope="col" style="width: 15%;">Userlevel</th>
-              <th class="text-center" scope="col" style="width: 5%;">Status</th>
-              <th class="text-center" scope="col" style="width: 15%;">Action</th>
-            </tr>
-          </thead>
-          <tbody id="user-data">
-            <!-- User data will be injected here by JavaScript -->
-          </tbody>
-        </table>
-        <nav>
-          <ul class="pagination" id="pagination">
-            <!-- Pagination controls will be injected here by JavaScript -->
-          </ul>
-        </nav>
-      </div>
+    <div class="container">
+      <h1 class="display-5 mb-3 fw-bold">User Management</h1>
+      <button class="btn btn-primary float-end mb-2" data-bs-toggle="modal" data-bs-target="#add-user-modal">
+        <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i> Add User
+      </button>
+      <input type="text" class="form-control w-25 my-2" id="column-search" placeholder="Search Name:">
+      <table class="table table-hover table-bordered text-center" id="users-table">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col" style="width: 5%;">ID</th>
+            <th class="text-center" scope="col" style="width: 15%;">Name</th>
+            <th class="text-center" scope="col" style="width: 15%;">Username</th>
+            <th class="text-center" scope="col" style="width: 15%;">Userlevel</th>
+            <th class="text-center" scope="col" style="width: 5%;">Status</th>
+            <th class="text-center" scope="col" style="width: 15%;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="user-data">
+          <!-- User data will be injected here by JavaScript -->
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pagination" id="pagination">
+          <!-- Pagination controls will be injected here by JavaScript -->
+        </ul>
+      </nav>
     </div>
   </div>
   <?php

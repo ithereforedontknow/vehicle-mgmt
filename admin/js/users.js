@@ -98,79 +98,78 @@ $("#edit-user").submit(function (event) {
   });
 });
 $(document).ready(function () {
-  function fetchUsers(page = 1, search = "") {
+  const fetchUsers = (page = 1, search = "") =>
     $.ajax({
       url: "./api/fetch/fetch_users.php",
       type: "GET",
       dataType: "json",
-      data: {
-        page: page,
-        search: search,
-      },
-      success: function (response) {
-        var userTable = $("#user-data");
+      data: { page, search },
+    }).then(
+      (response) => {
+        const userTable = $("#user-data");
         userTable.empty();
-        var users = response.data;
-        users.forEach(function (user) {
-          var userRow = `<tr>
-                      <td class='text-center'>${user.id}</td>
-                      <td class='text-center'>${user.fname} ${user.lname}</td>
-                      <td class='text-center'>${user.username}</td>
-                      <td class='text-center'>${user.userlevel}</td>
-                      <td class='text-center'>${
-                        user.active == 1 ? "Active" : "Inactive"
-                      }</td>
-                      <td class='exclude-print'>
-                          <button class='btn btn-primary px-2 me-2' onclick='edit_user(${
-                            user.id
-                          })'>
-                              <i class='fa-solid fa-pen-to-square fa-lg' style='color: #ffffff;'></i> Edit
-                          </button>
-                          ${
-                            user.active == 1
-                              ? `<button class='btn btn-danger px-1' onclick='deactivate_user(${user.id})'>
+
+        const users = response.data;
+        const rows = users.map(
+          (user) => `<tr>
+                        <td class='text-center'>${user.id}</td>
+                        <td class='text-center'>${user.fname} ${user.lname}</td>
+                        <td class='text-center'>${user.username}</td>
+                        <td class='text-center'>${user.userlevel}</td>
+                        <td class='text-center'>${
+                          user.active ? "Active" : "Inactive"
+                        }</td>
+                        <td class='exclude-print'>
+                            <button class='btn btn-primary px-2 me-2' onclick='edit_user(${
+                              user.id
+                            })'>
+                                <i class='fa-solid fa-pen-to-square fa-lg' style='color: #ffffff;'></i> Edit
+                            </button>
+                            ${
+                              user.active
+                                ? `<button class='btn btn-danger px-1' onclick='deactivate_user(${user.id})'>
                               <i class='fa-solid fa-user-xmark fa-lg' style='color: #ffffff;'></i> Deactivate
                           </button>`
-                              : `<button class='btn btn-success px-2' onclick='activate_user(${user.id})'>
+                                : `<button class='btn btn-success px-2' onclick='activate_user(${user.id})'>
                               <i class='fa-solid fa-user-check fa-lg' style='color: #ffffff;'></i> Activate
                           </button>`
-                          }
-                      </td>
-                  </tr>`;
-          userTable.append(userRow);
-        });
+                            }
+                        </td>
+                    </tr>`
+        );
 
-        // Update pagination
-        var pagination = $("#pagination");
+        userTable.append(rows);
+
+        const pagination = $("#pagination");
         pagination.empty();
-        var totalPages = Math.ceil(response.total / response.limit);
-        for (var i = 1; i <= totalPages; i++) {
-          var pageItem = `<li class='page-item ${
+
+        const totalPages = Math.ceil(response.total / response.limit);
+        for (let i = 1; i <= totalPages; i++) {
+          const pageItem = `<li class='page-item ${
             i === response.page ? "active" : ""
-          }'><a class='page-link' href='#' data-page='${i}'>${i}</a></li>`;
+          }'>
+                              <a class='page-link' href='#' data-page='${i}'>${i}</a>
+                          </li>`;
           pagination.append(pageItem);
         }
       },
-      error: function (xhr, status, error) {
-        console.error("Error fetching data:", error);
-      },
-    });
-  }
+      (xhr, status, error) => console.error("Error fetching data:", error)
+    );
 
   // Initial fetch
   fetchUsers();
 
   // Search functionality
   $("#column-search").on("keyup", function () {
-    var searchTerm = $(this).val();
+    const searchTerm = $(this).val();
     fetchUsers(1, searchTerm);
   });
 
   // Pagination click event
   $(document).on("click", ".page-link", function (e) {
     e.preventDefault();
-    var page = $(this).data("page");
-    var searchTerm = $("#column-search").val();
+    const page = $(this).data("page");
+    const searchTerm = $("#column-search").val();
     fetchUsers(page, searchTerm);
   });
 });

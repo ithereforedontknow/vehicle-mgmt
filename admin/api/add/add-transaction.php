@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $unloadingTimeStart = $_POST['unloadingTimeStart'];
     $unloadingTimeEnd = $_POST['unloadingTimeEnd'];
     $timeOfDeparture = $_POST['timeOfDeparture'];
-    $status = 'ongoing'; // Added status parameter
+    $status = 'departed'; // Added status parameter
 
     // Check if arrival time is unique
     $sql = "SELECT * FROM transaction WHERE arrival_time = ?";

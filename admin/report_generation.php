@@ -1,18 +1,12 @@
 <?php
-require '../api/db_connection.php';
-session_start();
-if (!isset($_SESSION['id'])) {
-    header("location: ../index.php");
-}
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
-    if ($_SESSION['userlevel'] == 'traffic(main)') {
-        header("location: ../traffic(main)/index.php");
-    } elseif ($_SESSION['userlevel'] == 'encoder') {
-        header("location: ../encoder/index.php");
-    } elseif ($_SESSION['userlevel'] == 'traffic(branch)') {
-        header("location: ../traffic(branch)/index.php");
-    }
+require_once '../api/db_connection.php';
+
+session_start();
+
+if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
+    header('Location: ../index.php');
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -37,28 +31,80 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
 
 
     <div class="content" id="content">
-        <div class="container w-75 shadow-sm p-5 mb-5 bg-body rounded">
-            <h2 class="display-3 text-center">Report Generation</h2>
-        </div>
-        <div class="container w-75 shadow-sm p-5 mb-5 bg-body rounded">
-            <h2 class="display-5 text-center">Tally In (Posted)</h2>
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3">Report Generation</h1>
+            <div class="row">
+                <div class="col">
+                    <div class="container shadow-sm p-5 mb-5 bg-white rounded">
 
-            <!-- Export to Excel Dropdown -->
-            <button id="export-excel" class="btn btn-primary float-end ms-2">
-                Export to Excel
-            </button>
+                        <h2 class="">Tally In (Posted)</h1>
 
-            <div class="btn-group float-end mb-2 ms-2">
-                <button id="" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select date
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" data-type="day">Day</a>
-                    <a class="dropdown-item" href="#" data-type="month">Month</a>
-                    <a class="dropdown-item" href="#" data-type="year">Year</a>
+                            <!-- Export to Excel Dropdown -->
+                            <button id="export-excel" class="btn btn-primary mb-3">
+                                Export to Excel
+                            </button>
+                            <div class="btn-group mb-3">
+                                <button id="" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select date
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" data-type="day">Day</a>
+                                    <a class="dropdown-item" href="#" data-type="month">Month</a>
+                                    <a class="dropdown-item" href="#" data-type="year">Year</a>
+                                </div>
+                            </div><!-- Table -->
+                            <table class="table table-hover table-bordered text-center" id="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col" style="width: 5%;">ID</th>
+                                        <th class="text-center" scope="col" style="width: 15%;">To Reference</th>
+                                        <th class="text-center" scope="col" style="width: 15%;">Hauler</th>
+                                        <th class="text-center" scope="col" style="width: 15%;">Plate Number</th>
+                                        <th class="text-center" scope="col" style="width: 15%;">Driver Name</th>
+                                        <th class="text-center" scope="col" style="width: 15%;">Project</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transaction-data">
+                                    <?php
+                                    $sql = "SELECT * FROM Transaction t INNER JOIN hauler h 
+                    ON t.hauler_id = h.hauler_id inner join vehicle v on 
+                    t.vehicle_id = v.vehicle_id inner join driver d on 
+                    t.driver_id = d.driver_id inner join project p on 
+                    t.project_id = p.project_id";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                    ?>
+                                            <tr>
+                                                <td class='text-center'><?= $row['transaction_id'] ?></td>
+                                                <td class='text-center'><?= $row['to_reference'] ?></td>
+                                                <td class='text-center'><?= $row['hauler_name'] ?></td>
+                                                <td class='text-center'><?= $row['plate_number'] ?></td>
+                                                <td class='text-center'><?= $row['driver_name'] ?></td>
+                                                <td class='text-center'><?= $row['project_name'] ?></td>
+                                            </tr>
+                                        <?php
+                                        }
+                                    } else {
+                                        ?>
+                                        <tr>
+                                            <td colspan='22'>
+                                                <center>
+                                                    <h2 class='text-muted'>No Record</h2>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                <div class="col">
+
                 </div>
             </div>
-
             <!-- Day Modal -->
             <div class="modal fade" id="dayModal" tabindex="-1" aria-labelledby="dayModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -116,56 +162,10 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                 </div>
             </div>
 
-            <!-- Table -->
-            <table class="table table-hover table-bordered text-center" id="transactions-table">
-                <thead>
-                    <tr>
-                        <th class="text-center" scope="col" style="width: 5%;">ID</th>
-                        <th class="text-center" scope="col" style="width: 15%;">To Reference</th>
-                        <th class="text-center" scope="col" style="width: 15%;">Hauler</th>
-                        <th class="text-center" scope="col" style="width: 15%;">Plate Number</th>
-                        <th class="text-center" scope="col" style="width: 15%;">Driver Name</th>
-                        <th class="text-center" scope="col" style="width: 15%;">Project</th>
-                    </tr>
-                </thead>
-                <tbody id="transaction-data">
-                    <?php
-                    $sql = "SELECT * FROM Transaction t INNER JOIN hauler h 
-                    ON t.hauler_id = h.hauler_id inner join vehicle v on 
-                    t.vehicle_id = v.vehicle_id inner join driver d on 
-                    t.driver_id = d.driver_id inner join project p on 
-                    t.project_id = p.project_id";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                    ?>
-                            <tr>
-                                <td class='text-center'><?= $row['transaction_id'] ?></td>
-                                <td class='text-center'><?= $row['to_reference'] ?></td>
-                                <td class='text-center'><?= $row['hauler_name'] ?></td>
-                                <td class='text-center'><?= $row['plate_number'] ?></td>
-                                <td class='text-center'><?= $row['driver_name'] ?></td>
-                                <td class='text-center'><?= $row['project_name'] ?></td>
-                            </tr>
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <tr>
-                            <td colspan='22'>
-                                <center>
-                                    <h2 class='text-muted'>No Record</h2>
-                                </center>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
+
         </div>
     </div>
-    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -216,26 +216,19 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                 })
                 .catch(error => console.error('Error:', error));
         });
-    </script>
-    <script>
+
         $(document).ready(function() {
-            var exportType;
+            var selectedType;
 
             // Handle dropdown item click
             $('.dropdown-item').on('click', function() {
-                exportType = $(this).data('type');
-                if (exportType === 'day') {
-                    $('#dayModal').modal('show');
-                } else if (exportType === 'month') {
-                    $('#monthModal').modal('show');
-                } else if (exportType === 'year') {
-                    $('#yearModal').modal('show');
-                }
+                selectedType = $(this).data('type');
+                $('#' + selectedType + 'Modal').modal('show');
             });
 
             // Initialize the daypicker
             function initializeDayPicker() {
-                var days = '';
+                var days = [];
                 var date = new Date();
                 var year = date.getFullYear();
                 var month = date.getMonth();
@@ -243,37 +236,54 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
                 var daysInMonth = new Date(year, month + 1, 0).getDate();
 
                 for (var i = 1; i <= daysInMonth; i++) {
-                    var selected = (i === currentDay) ? ' selected' : '';
-                    days += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+                    days.push({
+                        value: i,
+                        selected: i === currentDay
+                    });
                 }
-                $('#daypicker').html('<select class="form-control">' + days + '</select>');
+
+                $('#daypicker').html('<select class="form-control">' + days.map(function(day) {
+                    return '<option value="' + day.value + '"' + (day.selected ? ' selected' : '') + '>' + day.value + '</option>';
+                }).join('') + '</select>');
             }
 
             // Initialize the monthpicker
             function initializeMonthPicker() {
-                var months = '';
+                var months = [];
                 var date = new Date();
                 var currentMonth = date.getMonth();
+
                 for (var i = 0; i < 12; i++) {
                     var monthName = new Date(0, i).toLocaleString('en', {
                         month: 'long'
                     });
-                    var selected = (i === currentMonth) ? ' selected' : '';
-                    months += '<option value="' + (i + 1) + '"' + selected + '>' + monthName + '</option>';
+                    months.push({
+                        value: i + 1,
+                        selected: i === currentMonth
+                    });
                 }
-                $('#monthpicker').html('<select class="form-control">' + months + '</select>');
+
+                $('#monthpicker').html('<select class="form-control">' + months.map(function(month) {
+                    return '<option value="' + month.value + '"' + (month.selected ? ' selected' : '') + '>' + monthName + '</option>';
+                }).join('') + '</select>');
             }
 
             // Initialize the yearpicker
             function initializeYearPicker() {
-                var years = '';
+                var years = [];
                 var date = new Date();
                 var currentYear = date.getFullYear();
+
                 for (var i = currentYear - 50; i <= currentYear + 10; i++) {
-                    var selected = (i === currentYear) ? ' selected' : '';
-                    years += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+                    years.push({
+                        value: i,
+                        selected: i === currentYear
+                    });
                 }
-                $('#yearpicker').html('<select class="form-control">' + years + '</select>');
+
+                $('#yearpicker').html('<select class="form-control">' + years.map(function(year) {
+                    return '<option value="' + year.value + '"' + (year.selected ? ' selected' : '') + '>' + year.value + '</option>';
+                }).join('') + '</select>');
             }
 
             initializeDayPicker();
@@ -300,9 +310,6 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'admin') {
             });
 
             function exportToExcel(type, value) {
-                // Your export logic here
-                console.log('Exporting to Excel:', type, value);
-                // Example call to your existing export function
                 fetch('api/export_transactions.php')
                     .then(response => response.json())
                     .then(data => {

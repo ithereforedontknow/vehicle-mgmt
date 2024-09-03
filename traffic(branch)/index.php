@@ -50,7 +50,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(branch)') {
                             </div>
                             <div class="mb-3">
                                 <label for="hauler" class="form-label">Hauler</label>
-                                <select class="form-select" name="hauler_id" id="hauler">
+                                <select class="form-select" name="hauler_id" id="hauler_id">
                                     <?php
                                     $sql = "SELECT * FROM `hauler`";
                                     $result = mysqli_query($conn, $sql);
@@ -62,7 +62,7 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(branch)') {
                             </div>
                             <div class="mb-3">
                                 <label for="plate-number" class="form-label">Plate Number</label>
-                                <select class="form-select" name="vehicle_id" id="plate-number">
+                                <select class="form-select" name="vehicle_id" id="vehicle_id">
                                     <?php
                                     $sql = "SELECT * FROM `vehicle`";
                                     $result = mysqli_query($conn, $sql);
@@ -74,12 +74,12 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(branch)') {
                             </div>
                             <div class="mb-3">
                                 <label for="driver-name" class="form-label">Driver Name</label>
-                                <select class="form-select" name="driver_id" id="driver-name">
+                                <select class="form-select" name="driver_id" id="driver_id">
                                     <?php
                                     $sql = "SELECT * FROM `driver`";
                                     $result = mysqli_query($conn, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['driver_id'] . '">' . $row['driver_name'] . '</option>';
+                                        echo '<option value="' . $row['driver_id'] . '">' . $row['driver_fname'] . ' ' . $row['driver_lname'] . '</option>';
                                     }
                                     ?>
                                 </select>
@@ -89,14 +89,11 @@ if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'traffic(branch)') {
                         <div class="col">
                             <div class="mb-3">
                                 <label for="project" class="form-label">Project</label>
-                                <select class="form-select" name="project_id" id="project">
-                                    <?php
-                                    $sql = "SELECT * FROM `project`";
-                                    $result = mysqli_query($conn, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['project_id'] . '">' . $row['project_name'] . '</option>';
-                                    }
-                                    ?>
+                                <select class="form-select" name="project_id" id="project_id">
+                                    <option value="">Project1</option>
+                                    <option value="">Project2</option>
+                                    <option value="">Project3</option>
+                                    <option value="">Others</option>
                                 </select>
                             </div>
 

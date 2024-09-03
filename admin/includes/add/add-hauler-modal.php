@@ -10,10 +10,10 @@
                     <div class="form-group mb-2">
                         <label for="hauler_name">Hauler</label>
                         <input type="text" class="form-control" id="hauler_name" name="hauler_name" required placeholder="">
+                    </div>
+                    <div class="form-group mb-2">
                         <label for="hauler_address">Address</label>
                         <input type="text" class="form-control" id="hauler_address" name="hauler_address" required placeholder="">
-                        <label for="hauler_type_truck">Type of Truck</label>
-                        <input type="text" class="form-control" id="hauler_type_truck" name="hauler_type_truck" required placeholder="">
                     </div>
                 </div>
                 <div class="modal-footer">

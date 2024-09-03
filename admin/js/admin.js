@@ -27,8 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Handle form submission for add user
-
 function logout_user() {
   $.post("./api/logout.php", function (data) {
     if (data === "Logout successful") {

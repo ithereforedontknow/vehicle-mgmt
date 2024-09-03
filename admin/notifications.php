@@ -13,31 +13,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notifications</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="./css/style.css">
-    <style>
-        .notification-item {
-            background-color: #f8f9fa;
-            border-left: 4px solid #007bff;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .notification-item:hover {
-            background-color: #e9ecef;
-            transform: translateY(-2px);
-        }
-
-        .notification-icon {
-            color: #007bff;
-            margin-right: 10px;
-        }
-    </style>
 </head>
 
 <body class="bg-light">
@@ -54,7 +33,9 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                         while ($transaction = mysqli_fetch_assoc($result)) {
                     ?>
                             <div class="notification-item">
-                                <h5><i class="fas fa-truck notification-icon"></i><?= htmlspecialchars($transaction['to_reference']) ?> has departed from <?= htmlspecialchars($transaction['origin']) ?></h5> <small class="text-muted">Transaction ID: <?= htmlspecialchars($transaction['transaction_id']) ?></small>
+                                <h5><i class="fas fa-truck notification-icon"></i><?= $transaction['to_reference'] ?> has departed from <?= $transaction['origin'] ?></h5>
+                                <small class="text-muted">Transaction ID: <?= $transaction['transaction_id'] ?></small>
+                                <small class="text-muted float-end"><?= $transaction['created_at'] ?></small>
                             </div>
                         <?php
                         }
@@ -70,8 +51,8 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
     <script src="js/admin.js"></script>

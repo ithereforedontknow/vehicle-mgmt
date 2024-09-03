@@ -33,62 +33,25 @@ $("#add-transaction").submit(function (event) {
 });
 
 function vehicleArrived(transactionId) {
-  $.ajax({
-    url: "./api/update/update_status.php",
-    type: "POST",
-    data: {
-      transaction_id: transactionId,
-      status: "arrived",
-    },
-    success: function (response) {
-      window.location.reload();
-      console.log("Status updated successfully!");
-    },
-    error: function (xhr, status, error) {
-      console.log(xhr.responseText); // Log the error response for debugging
-      alert("Failed to update status. Please try again.");
-    },
-  });
-}
-function editTransaction(transactionId) {
-  $("#edit-transaction-modal").modal("show");
-  $("#edit-transaction-id").val(transactionId);
-  console.log("Transaction ID:", transactionId);
-}
-
-$("#edit-transaction").submit(function (event) {
-  event.preventDefault();
-
-  // Gather form data
   const data = {
-    transaction_id: $("#edit-transaction-id").val(),
-    arrival_date: $("#edit-arrival-date").val(),
-    arrival_time: $("#edit-arrival-time").val(),
-    unloading_date: $("#edit-unloading-date").val(),
-    time_of_entry: $("#edit-time-of-entry").val(),
-    unloading_time_start: $("#edit-unloading-time-start").val(),
-    unloading_time_end: $("#edit-unloading-time-end").val(),
-    time_of_departure: $("#edit-time-of-departure").val(),
+    transaction_id: transactionId,
+    status: "arrived",
   };
-
-  // Send data via POST request
-  $.post("../api/update/update_transaction.php", data, function (response) {
-    console.log("Response:", response);
-    if (response === "Transaction updated successfully") {
+  $.post("./api/update/update_status.php", data)
+    .then(function (response) {
       alert(response);
-      // Optionally, close the modal or refresh the page
-      $("#edit-transaction-modal").modal("hide");
-      location.reload(); // Reload the page to see changes (optional)
-    } else {
-      alert("Failed to update transaction: " + response);
-    }
-  });
-});
-function addQueue(transactionId) {
-  $("#queue-transaction-modal").modal("show");
-  $("#queue-transaction-id").val(transactionId);
+      location.reload();
+    })
+    .catch(function (jqXHR, textStatus, errorThrown) {
+      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+    });
 }
 
+function addQueue(transactionId) {
+  console.log("Adding to queue, transaction ID:", transactionId);
+  $("#queue-transaction-id").val(transactionId);
+  $("#queue-transaction-modal").modal("show");
+}
 $("#queue-transaction").submit(function (event) {
   event.preventDefault();
   const data = {
@@ -99,13 +62,13 @@ $("#queue-transaction").submit(function (event) {
     schedule: $("#queue-schedule").val(),
     status: "queue",
   };
-  $.post("./api/add/add-queue.php", data).then(function (response) {
-    alert(
-      response === "Transaction updated successfully"
-        ? response
-        : "Failed to update transaction: " + response
-    );
-    $("#queue-transaction-modal").modal("hide");
-    location.reload(); // Reload the page to see changes (optional)
-  });
+  $.post("./api/add/add-queue.php", data)
+    .then(function (response) {
+      alert(response); // Display the actual response message from PHP
+      $("#queue-transaction-modal").modal("hide");
+      location.reload(); // Reload the page to see changes (optional)
+    })
+    .catch(function (jqXHR, textStatus, errorThrown) {
+      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+    });
 });

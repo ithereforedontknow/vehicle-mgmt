@@ -11,17 +11,34 @@
                 <a class="nav-link" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-bell fa-lg"></i>
                     <!-- Badge showing the number of notifications -->
-                    <span class="badge bg-danger rounded-circle">3</span>
+                    <span class="badge bg-danger rounded-circle">
+                        <?php
+                        $currentTime = date('Y-m-d H:i:s');
+                        $transactionCountQuery = "SELECT COUNT(*) FROM `transaction` WHERE created_at >= '$currentTime'";
+                        $result = mysqli_query($conn, $transactionCountQuery);
+                        $transactionCount = mysqli_fetch_array($result)[0];
+                        echo $transactionCount;
+                        ?>
+                    </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end bg-dark dropdown-menu-dark shadow" aria-labelledby="notificationDropdown">
                     <?php
-                    $query = "SELECT * FROM `transaction` ORDER BY transaction_id DESC LIMIT 3";
+                    $currentTime = date('Y-m-d H:i:s');
+                    $query = "SELECT * FROM `transaction` WHERE created_at >= '$currentTime' ORDER BY transaction_id DESC";
                     $result = mysqli_query($conn, $query);
 
                     if (mysqli_num_rows($result) > 0) {
                         while ($transaction = mysqli_fetch_assoc($result)) {
+                            $notification = "{$transaction['to_reference']} has departed from {$transaction['origin']}";
                     ?>
-                            <li><a class="dropdown-item" href="#"><?= $transaction['to_reference'] ?> has departed from <?= $transaction['origin'] ?></a></li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <?= "{$transaction['to_reference']} has departed from {$transaction['origin']}" ?>
+                                    <div>
+                                        <?= date('F j, Y, g:i a', strtotime($transaction['created_at'])) ?>
+                                    </div>
+                                </a>
+                            </li>
                         <?php
                         }
                     } else {
@@ -63,9 +80,9 @@
 <div class="sidebar bg-dark shadow" id="sidebar">
     <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; height: 100svh; ">
         <ul class="nav nav-pills flex-column mb-3">
-            <li class="nav-item">
+            <li class="nav-item mb-1">
                 <a href="index.php" class="nav-link text-white">
-                    <i class="fa-solid fa-chart-line fa-lg me-2"></i>
+                    <i class="fa-solid fa-chart-line fa-lg me-2 "></i>
                     Dashboard
                 </a>
             </li>
@@ -87,31 +104,26 @@
                     </ul>
                 </div>
             </li>
-            <li>
+            <li class="nav-item mb-1">
                 <a href="queue.php" class="nav-link text-white">
                     <i class="fa-solid fa-clock fa-lg me-2"></i>
                     Queue Management
                 </a>
             </li>
-            <li>
+            <li class="nav-item mb-1">
                 <a href="logs.php" class="nav-link text-white">
                     <i class="fa-solid fa-clipboard-list fa-lg me-2"></i> Vehicle Logs
                 </a>
             </li>
-            <li>
+            <li class="nav-item mb-1">
                 <a href="report_generation.php" class="nav-link text-white">
                     <i class="fa-solid fa-print fa-lg me-2"></i>
                     Report Generation
                 </a>
             </li>
-            <li>
+            <li class="nav-item mb-1">
                 <a href="settings.php" class="nav-link text-white">
                     <i class="fa-solid fa-gear fa-lg me-2"></i> Settings
-                </a>
-            </li>
-            <li>
-                <a href="utilities.php" class="nav-link text-white">
-                    <i class="fa-solid fa-toolbox fa-lg me-2"></i>Utilities
                 </a>
             </li>
         </ul>

@@ -82,7 +82,9 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                 </table>
             </div>
         </div>
-
+        <?php
+        include_once('includes/edit/edit-transaction-modal.php');
+        ?>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
@@ -99,9 +101,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
             });
         </script>
     </div>
-    <?php
-    include_once('includes/edit/edit-transaction-modal.php');
-    ?>
+
 </body>
 
 </html>

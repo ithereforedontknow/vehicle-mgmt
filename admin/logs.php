@@ -16,10 +16,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vehicle Transactions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <title>Vehicle Logs</title>
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
     <style>
         .details-control {
@@ -37,7 +37,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
 
     <div class="content" id="content">
         <div class="container">
-            <h1 class="display-5 mb-3 fw-bold">Transactions (Departed)</h1>
+            <h1 class="display-5 mb-3 fw-bold">Logs</h1>
             <div class="mb-3">
                 <input type="text" id="search-input" class="form-control" placeholder="Search Transactions">
             </div>
@@ -99,9 +99,8 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                 </table>
             </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="../public/js/bootstrap.bundle.min.js"></script>
+        <script src="../public/js/jquery.min.js"></script>
         <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
         <script src="js/admin.js"></script>
         <script src="js/transaction.js"></script>

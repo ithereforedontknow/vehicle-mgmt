@@ -5,7 +5,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $haulerName = $_POST['haulerName'];
     $haulerAddress = $_POST['haulerAddress'];
-    $haulerTypeTruck = $_POST['haulerTypeTruck'];
 
     // Check if id is unique
     $sql = "SELECT * FROM hauler WHERE hauler_name = '$haulerName'";
@@ -14,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Existing hauler");
     }
     // Insert the user into the database
-    $sql = "INSERT INTO hauler (hauler_name, address, type_truck) VALUES ('$haulerName' , '$haulerAddress', '$haulerTypeTruck')";
+    $sql = "INSERT INTO hauler (hauler_name, hauler_address) VALUES ('$haulerName' , '$haulerAddress')";
     if ($conn->query($sql) === TRUE) {
         echo "Hauler added successful";
     } else {

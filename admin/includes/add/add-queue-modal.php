@@ -11,14 +11,14 @@
                     <div class="mb-3">
                         <label for="queue-transfer-in-line" class="form-label">Transfer in Line #</label>
                         <select class="form-select" id="queue-transfer-in-line" name="queue-transfer-in-line">
-                            <option value="Line 3">Line 3</option>
-                            <option value="Line 4">Line 4</option>
-                            <option value="Line 5">Line 5</option>
-                            <option value="Line 6">Line 6</option>
-                            <option value="Line 7">Line 7</option>
-                            <option value="GLAD">GLAD WHSE</option>
-                            <option value="WHSE 2-BAY 2">WHSE 2-BAY 2</option>
-                            <option value="WHSE 2-BAY 3">WHSE 2-BAY 3</option>
+                            <option value="1">Line 3</option>
+                            <option value="2">Line 4</option>
+                            <option value="3">Line 5</option>
+                            <option value="4">Line 6</option>
+                            <option value="5">Line 7</option>
+                            <option value="6">GLAD WHSE</option>
+                            <option value="7">WHSE 2-BAY 2</option>
+                            <option value="8">WHSE 2-BAY 3</option>
                         </select>
                     </div>
                     <div class="mb-3">

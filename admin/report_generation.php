@@ -16,10 +16,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Report Generation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 </head>
@@ -37,7 +37,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                 <div class="col">
                     <div class="container shadow-sm p-5 mb-5 bg-white rounded">
 
-                        <h2 class="">Tally In (Posted)</h1>
+                        <h4 class="fw-bold">Tally In (Posted)</h1>
 
                             <!-- Export to Excel Dropdown -->
                             <button id="export-excel" class="btn btn-primary mb-3">
@@ -67,10 +67,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                 <tbody id="transaction-data">
                                     <?php
                                     $sql = "SELECT * FROM Transaction t INNER JOIN hauler h 
-                    ON t.hauler_id = h.hauler_id inner join vehicle v on 
-                    t.vehicle_id = v.vehicle_id inner join driver d on 
-                    t.driver_id = d.driver_id inner join project p on 
-                    t.project_id = p.project_id";
+                                    ON t.hauler_id = h.hauler_id inner join vehicle v on 
+                                    t.vehicle_id = v.vehicle_id inner join driver d on 
+                                    t.driver_id = d.driver_id inner join project p on 
+                                    t.project_id = p.project_id";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
@@ -167,8 +167,8 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>

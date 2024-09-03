@@ -1,70 +1,64 @@
 $("#add-hauler").submit((e) => {
   e.preventDefault();
-  const haulerName = $("#hauler_name").val();
-  const haulerAddress = $("#hauler_address").val();
-  const haulerTypeTruck = $("#hauler_type_truck").val();
-  $.ajax({
-    url: "./api/add/add-hauler.php",
-    type: "POST",
-    data: {
-      haulerName: haulerName,
-      haulerAddress: haulerAddress,
-      haulerTypeTruck: haulerTypeTruck,
-    },
-    success: function (data) {
+  const data = {
+    haulerName: $("#hauler_name").val(),
+    haulerAddress: $("#hauler_address").val(),
+  };
+
+  $.post("./api/add/add-hauler.php", data)
+    .then(() => {
       $("#add-hauler-modal").modal("hide");
       window.location.reload();
-      alert(data);
-    },
-    failure: function (data) {
-      alert(data);
-    },
-  });
+    })
+    .catch((error) => alert(error));
 });
-
+function showOthersType() {
+  if ($("#truck-type").val() == "Others") {
+    $("#others-type-container").show();
+  } else {
+    $("#others-type-container").hide();
+  }
+}
 $("#add-vehicle").submit((e) => {
   e.preventDefault();
+
   const plateNumber = $("#plate-no").val();
   const truckType = $("#truck-type").val();
-  $.ajax({
-    url: "./api/add/add-vehicle.php",
-    type: "POST",
-    data: {
-      plateNumber: plateNumber,
-      truckType: truckType,
-    },
-    success: function (data) {
+
+  const data = {
+    plateNumber,
+    truckType: truckType === "Others" ? $("#others-type").val() : truckType,
+  };
+
+  $.post("./api/add/add-vehicle.php", data)
+    .then(() => {
       $("#add-vehicle-modal").modal("hide");
       window.location.reload();
-      alert(data);
-    },
-    failure: function (data) {
-      alert(data);
-    },
-  });
+    })
+    .catch((error) => alert(error));
 });
 
 $("#add-driver").submit((e) => {
   e.preventDefault();
-  const driverName = $("#driver-name").val();
-  // driver phone number
-  // const driverPhone = $("#driver-phone").val();
-  $.ajax({
-    url: "./api/add/add-driver.php",
-    type: "POST",
-    data: {
-      driverName: driverName,
-    },
-    success: function (data) {
+  const data = {
+    driverFname: $("#driver-fname").val(),
+    driverMname: $("#driver-mname").val(),
+    driverLname: $("#driver-lname").val(),
+    driverPhone: $("#driver-phone").val(),
+    helperFname: $("#helper-fname").val(),
+    helperMname: $("#helper-mname").val(),
+    helperLname: $("#helper-lname").val(),
+    helperPhone: $("#helper-phone").val(),
+  };
+  $.post("./api/add/add-driver.php", data)
+    .then(() => {
       $("#add-driver-modal").modal("hide");
       window.location.reload();
-      alert(data);
-    },
-    failure: function (data) {
-      alert(data);
-    },
-  });
+      // alert("Driver added successfully");
+    })
+    .catch(() => alert("Error adding driver. Please try again."));
 });
+
 $("#add-project").submit((e) => {
   e.preventDefault();
   const project = $("#project").val();

@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"); */
+@import url("/assets/font/Inter_24pt-Regular.ttf");
 body {
   padding-top: 56px;
   font-family: "Lato", sans-serif;
@@ -48,29 +49,48 @@ body {
 .dropdown-toggle.collapsed::after {
   transform: rotate(180deg);
 }
-.card {
-  transition: transform 0.3s;
+.greetings-item {
+  border-left: 4px solid #1b3667;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 4px;
+  /* transition: all 0.3s ease; */
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* .greetings-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+} */
+
+.greetings-icon {
+  color: #1b3667;
+  margin-right: 10px;
 }
 
-.card-body {
-  padding: 1.5rem;
+#transaction-data {
+  font-size: 14px;
 }
 
-.card-title {
-  color: #6c757d;
-  font-weight: bold;
+.notification-item {
+  background-color: #f8f9fa;
+  border-left: 4px solid #1b3667;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.card-text {
-  color: #007bff;
-  font-weight: bold;
+.notification-item:hover {
+  background-color: #e9ecef;
 }
 
-h2 {
-  color: #6c757d;
+.notification-icon {
+  color: #1b3667;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: #1b3667;
+  border: #1b3667;
 }

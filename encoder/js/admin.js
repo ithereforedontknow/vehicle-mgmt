@@ -20,14 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-document.addEventListener("DOMContentLoaded", function () {
-  var dropdown = document.getElementById("vehicleTransactionsDropdown");
-  dropdown.addEventListener("click", function () {
-    dropdown.classList.toggle("collapse show");
-  });
-});
-
-// Handle form submission for add user
 
 function logout_user() {
   $.post("./api/logout.php", function (data) {

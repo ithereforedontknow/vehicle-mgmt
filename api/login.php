@@ -10,15 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$username) {
         die("Invalid username");
     }
-
     // Check user credentials
-    $sql = "SELECT * FROM tbl_user WHERE username ='$username'";
+    $sql = "SELECT * FROM users WHERE username ='$username'";
     $result = $conn->query($sql);
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
         $_SESSION['userlevel'] = $row['userlevel'];
         if (password_verify($password, $row['password'])) {
-            if ($row['active'] == 1) {
+            if ($row['status'] == 1) {
                 if ($_SESSION['userlevel'] == 'admin') {
                     echo "admin";
                 } elseif ($_SESSION['userlevel'] == 'traffic(main)') {

@@ -77,9 +77,15 @@ while ($row = $result->fetch_assoc()) {
           <div class="container shadow-sm p-3 mb-5 bg-white rounded text-center">
             <div class="row">
               <div class="col">
-
+                <!-- Period Dropdown -->
+                <select id="transactionVehiclePeriodSelect" class="form-select">
+                  <option value="today">Today</option>
+                  <option value="month">This Month</option>
+                  <option value="year" selected>This Year</option>
+                </select>
               </div>
-              <div class="col-md-4">
+              <div class="col">
+                <!-- Truck Type Dropdown -->
                 <select id="truckTypeDropdown" class="form-select">
                   <option value="">All Truck Types</option>
                   <?php foreach ($truckTypes as $type) { ?>
@@ -99,8 +105,8 @@ while ($row = $result->fetch_assoc()) {
   </div>
 
 
-  <script src="../public/js/jquery.min.js"></script>
   <script src="../public/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/js/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
   <script src="../public/js/chart.umd.js"></script>p
   <script src="js/admin.js"></script>
@@ -110,7 +116,7 @@ while ($row = $result->fetch_assoc()) {
 
       function updateChart(period) {
         $.ajax({
-          url: 'fetch_transaction_data.php',
+          url: './api/fetch/fetch_transaction_data.php',
           type: 'GET',
           data: {
             period: period
@@ -221,9 +227,10 @@ while ($row = $result->fetch_assoc()) {
 
       var vehicleChart;
 
+      // Function to update the Vehicle Entry Chart based on the selected period and truck type
       function updateVehicleEntryChart(period, truckType) {
         $.ajax({
-          url: 'fetch_vehicle_entry_data.php',
+          url: 'api/fetch/fetch_vehicle_entry_data.php',
           type: 'GET',
           data: {
             period: period,
@@ -234,17 +241,19 @@ while ($row = $result->fetch_assoc()) {
             var ctx = document.getElementById('vehicleEntryChart').getContext('2d');
 
             var labels = data.map(function(item) {
-              return item.plate_number;
+              return item.plate_number; // Using plate_number for the labels
             });
 
             var counts = data.map(function(item) {
               return item.entry_count;
             });
 
+            // Destroy the old chart before creating a new one
             if (vehicleChart) {
               vehicleChart.destroy();
             }
 
+            // Create the new chart
             vehicleChart = new Chart(ctx, {
               type: 'bar',
               data: {
@@ -254,10 +263,6 @@ while ($row = $result->fetch_assoc()) {
                   backgroundColor: 'rgba(54, 162, 235, 0.2)',
                   borderColor: 'rgba(54, 162, 235, 1)',
                   borderWidth: 2,
-                  pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                  pointBorderColor: '#fff',
-                  pointHoverBackgroundColor: '#fff',
-                  pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
                   data: counts
                 }]
               },
@@ -311,15 +316,16 @@ while ($row = $result->fetch_assoc()) {
       }
 
       // Initialize the vehicle entry chart
-      updateVehicleEntryChart('year', '');
+      updateVehicleEntryChart('year', ''); // Load for the current year and all truck types by default
 
-      // Add event listeners for select dropdown selections
-      $('#transactionPeriodSelect').change(function() {
+      // Add event listener for period selection
+      $('#transactionVehiclePeriodSelect').change(function() {
         var period = $(this).val();
         var truckType = $('#truckTypeDropdown').val(); // Get the selected truck type
         updateVehicleEntryChart(period, truckType);
       });
 
+      // Add event listener for truck type selection
       $('#truckTypeDropdown').change(function() {
         var period = $('#transactionPeriodSelect').val(); // Get the selected period
         var truckType = $(this).val();

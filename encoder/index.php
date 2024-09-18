@@ -1,35 +1,23 @@
 <?php
-require '../api/db_connection.php';
+
+require_once '../api/db_connection.php';
+
 session_start();
-if (!isset($_SESSION['id'])) {
-  header("location: ../index.php");
-}
-if (isset($_SESSION['id']) && $_SESSION['userlevel'] != 'encoder') {
 
-  if ($_SESSION['userlevel'] == 'admin') {
-    header("location: ../admin/index.php");
-  } elseif ($_SESSION['userlevel'] == 'traffic(main)') {
-    header("location: ../traffic(main)/index.php");
-  } else {
-    header("location: ../traffic(branch)/index.php");
-  }
+if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'encoder') {
+  header('Location: ../index.php');
+  exit;
 }
 
-// Get total number of transactions for the current day
-$sql_total = "SELECT COUNT(*) as total FROM Transaction WHERE DATE(time_of_entry) = CURDATE()";
-$result_total = $conn->query($sql_total);
-$total_transactions = $result_total->fetch_assoc()['total'];
+$sql = "SELECT DISTINCT truck_type FROM Vehicle";
+$result = $conn->query($sql);
 
-// Get total number of transactions for the current month
-$sql_month = "SELECT COUNT(*) as month_total FROM Transaction WHERE MONTH(time_of_entry) = MONTH(CURRENT_DATE()) AND YEAR(time_of_entry) = YEAR(CURRENT_DATE())";
-$result_month = $conn->query($sql_month);
-$month_transactions = $result_month->fetch_assoc()['month_total'];
-
-// Get total number of transactions for the current year
-$sql_year = "SELECT COUNT(*) as year_total FROM Transaction WHERE YEAR(time_of_entry) = YEAR(CURRENT_DATE())";
-$result_year = $conn->query($sql_year);
-$year_transactions = $result_year->fetch_assoc()['year_total'];
+$truckTypes = [];
+while ($row = $result->fetch_assoc()) {
+  $truckTypes[] = $row['truck_type'];
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,8 +25,8 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
 </head>
 
@@ -49,183 +37,303 @@ $year_transactions = $result_year->fetch_assoc()['year_total'];
   ?>
 
   <div class="content" id="content">
-    <div class="row mb-4">
-      <div class="col">
-        <div class="card text-center" id="todayCard" style="cursor: pointer;">
-          <div class="card-body">
-            <h5 class="card-title">Transactions Today</h5>
-            <p class="card-text display-4"><?php echo $total_transactions; ?></p>
+    <div class="container">
+      <h1 class="display-5 mb-3 fw-bold">Dashboard</h1>
+      <div class="row">
+        <div class="col">
+          <div class="greetings-item p-4 shadow-sm bg-body rounded">
+            <h5><i class="fas fa-hand greetings-icon"></i>Welcome, <?php echo $_SESSION['username']; ?>! <small class="text-muted">You are logged in as <?php echo $_SESSION['userlevel']; ?>.</small>
+          </div>
+        </div>
+        <div class="col">
+          <div class="greetings-item p-4 shadow-sm bg-body rounded">
+            <h5><i class="fas fa-exclamation greetings-icon"></i>Need Help? <small class="text-muted">Click <a href="help.php" target="_blank">here</a> for more information.</small"></a>. </small>
           </div>
         </div>
       </div>
 
-      <div class="col">
-        <div class="card text-center" id="monthCard" style="cursor: pointer;">
-          <div class="card-body">
-            <h5 class="card-title">Transactions This Month</h5>
-            <p class="card-text display-4"><?php echo $month_transactions; ?></p>
+      <div class="row">
+        <div class="col">
+          <div class="container shadow-sm p-3 mb-5 bg-white rounded text-center">
+            <div class="row">
+              <div class="col">
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <select id="transactionPeriodSelect" class="form-select">
+                    <option value="today">Today</option>
+                    <option value="month">This Month</option>
+                    <option value="year" selected>This Year</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div>
+              <canvas id="transactionChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="container shadow-sm p-3 mb-5 bg-white rounded text-center">
+            <div class="row">
+              <div class="col">
+                <!-- Period Dropdown -->
+                <select id="transactionVehiclePeriodSelect" class="form-select">
+                  <option value="today">Today</option>
+                  <option value="month">This Month</option>
+                  <option value="year" selected>This Year</option>
+                </select>
+              </div>
+              <div class="col">
+                <!-- Truck Type Dropdown -->
+                <select id="truckTypeDropdown" class="form-select">
+                  <option value="">All Truck Types</option>
+                  <?php foreach ($truckTypes as $type) { ?>
+                    <option value="<?php echo htmlspecialchars($type); ?>"><?php echo htmlspecialchars($type); ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              <div>
+                <canvas id="vehicleEntryChart"></canvas>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="col">
-        <div class="card text-center" id="yearCard" style="cursor: pointer;">
-          <div class="card-body">
-            <h5 class="card-title">Transactions This Year</h5>
-            <p class="card-text display-4"><?php echo $year_transactions; ?></p>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <div class="d-flex justify-content-center">
-      <div class="card w-75">
-        <div class="card-body">
-          <canvas id="transactionChart"></canvas>
-        </div>
-      </div>
-    </div>
+  </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="js/admin.js"></script>
-    <script>
-      // chart_script.js
-      $(document).ready(function() {
-        var chart;
+  <script src="../public/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/js/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
+  <script src="../public/js/chart.umd.js"></script>p
+  <script src="js/admin.js"></script>
+  <script>
+    $(document).ready(function() {
+      var chart;
 
-        function updateChart(period) {
-          $.ajax({
-            url: 'fetch_transaction_data.php',
-            type: 'GET',
-            data: {
-              period: period
-            },
-            dataType: 'json',
-            success: function(data) {
-              var ctx = document.getElementById('transactionChart').getContext('2d');
+      function updateChart(period) {
+        $.ajax({
+          url: './api/fetch/fetch_transaction_data.php',
+          type: 'GET',
+          data: {
+            period: period
+          },
+          dataType: 'json',
+          success: function(data) {
+            var ctx = document.getElementById('transactionChart').getContext('2d');
 
-              var labels = data.map(function(item) {
-                return item.label;
-              });
+            var labels = data.map(function(item) {
+              return item.label;
+            });
 
-              var counts = data.map(function(item) {
-                return item.transaction_count;
-              });
+            var counts = data.map(function(item) {
+              return item.transaction_count;
+            });
 
-              if (chart) {
-                chart.destroy();
-              }
+            if (chart) {
+              chart.destroy();
+            }
 
-              chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: labels,
-                  datasets: [{
-                    label: 'Number of Transactions',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2,
-                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-                    data: counts,
-                    fill: true,
-                    tension: 0.4
-                  }]
+            chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Number of Transactions',
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 2,
+                  pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                  data: counts,
+                  fill: true,
+                  tension: 0.4
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Transaction Count - ' + period.charAt(0).toUpperCase() + period.slice(1),
+                    font: {
+                      size: 24
+                    },
+                  },
+                  legend: {
+                    display: false,
+
+                  }
                 },
-                options: {
-                  responsive: true,
-                  plugins: {
+                scales: {
+                  x: {
+                    display: true,
                     title: {
                       display: true,
-                      text: 'Transaction Count - ' + period.charAt(0).toUpperCase() + period.slice(1),
+                      text: period === 'today' ? 'Hour' : (period === 'month' ? 'Day' : 'Month'),
                       font: {
-                        size: 24
+                        size: 18
                       },
-                      color: '#007bff' // Set title color to blue
                     },
-                    legend: {
-                      labels: {
-                        font: {
-                          size: 16
-                        }
+                    grid: {
+                      color: 'rgba(0, 0, 0, 0.1)'
+                    },
+                    ticks: {
+                      font: {
+                        size: 14
                       }
                     }
                   },
-                  scales: {
-                    x: {
+                  y: {
+                    display: true,
+                    title: {
                       display: true,
-                      title: {
-                        display: true,
-                        text: period === 'today' ? 'Hour' : (period === 'month' ? 'Day' : 'Month'),
-                        font: {
-                          size: 18
-                        },
-                        color: '#007bff' // Set title color to blue
-                      },
-                      grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                      },
-                      ticks: {
-                        font: {
-                          size: 14
-                        }
+                      text: 'Number of Transactions',
+                      font: {
+                        size: 16
                       }
                     },
-                    y: {
-                      display: true,
-                      title: {
-                        display: true,
-                        text: 'Number of Transactions',
-                        font: {
-                          size: 18
-                        }
-                      },
-                      beginAtZero: true,
-                      grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                      },
-                      ticks: {
-                        font: {
-                          size: 14
-                        }
+                    beginAtZero: true,
+
+                    ticks: {
+                      font: {
+                        size: 14
                       }
                     }
                   }
                 }
-              });
-            },
-            error: function(xhr, status, error) {
-              console.error('Error fetching data:', error);
-            }
-          });
-        }
-
-        // The rest of your code remains unchanged
-
-        // Initial chart load
-        updateChart('year');
-
-        // Add click event listeners to the cards
-        $('#todayCard').click(function() {
-          updateChart('today');
+              }
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+          }
         });
+      }
 
-        $('#monthCard').click(function() {
-          updateChart('month');
-        });
+      // Initial chart load
+      updateChart('year');
 
-        $('#yearCard').click(function() {
-          updateChart('year');
-        });
+      // Add event listener for the select dropdown
+      $('#transactionPeriodSelect').change(function() {
+        var period = $(this).val();
+        updateChart(period);
       });
-    </script>
+
+      var vehicleChart;
+
+      // Function to update the Vehicle Entry Chart based on the selected period and truck type
+      function updateVehicleEntryChart(period, truckType) {
+        $.ajax({
+          url: 'api/fetch/fetch_vehicle_entry_data.php',
+          type: 'GET',
+          data: {
+            period: period,
+            truck_type: truckType
+          },
+          dataType: 'json',
+          success: function(data) {
+            var ctx = document.getElementById('vehicleEntryChart').getContext('2d');
+
+            var labels = data.map(function(item) {
+              return item.plate_number; // Using plate_number for the labels
+            });
+
+            var counts = data.map(function(item) {
+              return item.entry_count;
+            });
+
+            // Destroy the old chart before creating a new one
+            if (vehicleChart) {
+              vehicleChart.destroy();
+            }
+
+            // Create the new chart
+            vehicleChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: 'Number of Entries',
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 2,
+                  data: counts
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: 'Vehicle Entry Count - ' + period.charAt(0).toUpperCase() + period.slice(1),
+                    font: {
+                      size: 24
+                    }
+                  },
+                  legend: {
+                    display: false
+                  }
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Plate Number',
+                      font: {
+                        size: 18
+                      }
+                    }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: 'Number of Entries',
+                      font: {
+                        size: 16
+                      }
+                    },
+                    ticks: {
+                      font: {
+                        size: 14
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error fetching vehicle data:', error);
+          }
+        });
+      }
+
+      // Initialize the vehicle entry chart
+      updateVehicleEntryChart('year', ''); // Load for the current year and all truck types by default
+
+      // Add event listener for period selection
+      $('#transactionVehiclePeriodSelect').change(function() {
+        var period = $(this).val();
+        var truckType = $('#truckTypeDropdown').val(); // Get the selected truck type
+        updateVehicleEntryChart(period, truckType);
+      });
+
+      // Add event listener for truck type selection
+      $('#truckTypeDropdown').change(function() {
+        var period = $('#transactionPeriodSelect').val(); // Get the selected period
+        var truckType = $(this).val();
+        updateVehicleEntryChart(period, truckType);
+      });
+
+    });
+  </script>
 </body>
 
 </html>

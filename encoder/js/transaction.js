@@ -1,87 +1,79 @@
-$("#add-transaction").submit(function (event) {
-  event.preventDefault();
-  const toReference = $("#to-reference").val();
-  const hauler_id = $("#hauler").val();
-  const vehicle_id = $("#plate-number").val();
-  const driver_id = $("#driver-name").val();
-  const project_id = $("#project").val();
-  const transferInLine = $("#transfer-in-line").val();
-  const ordinal = $("#ordinal").val();
-  const shift = $("#shift").val();
-  const schedule = $("#schedule").val();
-  const noOfBales = $("#no-of-bales").val();
-  const kilos = $("#kilos").val();
-  const origin = $("#origin").val();
-  const arrivalDate = $("#arrival-date").val();
-  const arrivalTime = $("#arrival-time").val();
-  const backlog = $("#backlog").val();
-  const unloadingDate = $("#unloading-date").val();
-  const timeOfEntry = $("#time-of-entry").val();
-  const unloadingTimeStart = $("#unloading-time-start").val();
-  const unloadingTimeEnd = $("#unloading-time-end").val();
-  const timeOfDeparture = $("#time-of-departure").val();
-
-  $.ajax({
-    url: "./api/add/add-transaction.php",
-    type: "POST",
-    data: {
-      toReference: toReference,
-      hauler_id: hauler_id,
-      vehicle_id: vehicle_id,
-      driver_id: driver_id,
-      project_id: project_id,
-      transferInLine: transferInLine,
-      ordinal: ordinal,
-      shift: shift,
-      schedule: schedule,
-      noOfBales: noOfBales,
-      kilos: kilos,
-      origin: origin,
-      arrivalDate: arrivalDate,
-      arrivalTime: arrivalTime,
-      backlog: backlog,
-      unloadingDate: unloadingDate,
-      timeOfEntry: timeOfEntry,
-      unloadingTimeStart: unloadingTimeStart,
-      unloadingTimeEnd: unloadingTimeEnd,
-      timeOfDeparture: timeOfDeparture,
-    },
-    success: function (data) {
-      if (data === "Transaction added successfully") {
-        console.log(data);
-      } else {
-        console.log(data);
-      }
-    },
+$(document).ready(function () {
+  // Filter functionality
+  const rows = $("#transactions-table tbody tr").toArray();
+  $("#search-input").on("keyup", function () {
+    const value = $(this).val().toLowerCase();
+    rows.forEach(
+      (row) =>
+        (row.style.display = row.textContent.toLowerCase().includes(value)
+          ? ""
+          : "none")
+    );
   });
 });
-
-function done_transaction(transaction_id) {
-  $.ajax({
-    url: "./api/update/update_transaction.php",
-    type: "POST",
-    data: {
-      transaction_id: transaction_id,
-      status: "done",
-    },
-    success: function (data) {
+$("#add-transaction").submit(function (event) {
+  event.preventDefault();
+  const data = {
+    to_reference: $("#to-reference").val(),
+    hauler_id: $("#hauler").val(),
+    vehicle_id: $("#plate-number").val(),
+    driver_id: $("#driver-name").val(),
+    helper_id: $("#helper-name").val(),
+    project_id: $("#project").val(),
+    no_of_bales: $("#no-of-bales").val(),
+    kilos: $("#kilos").val(),
+    origin: $("#origin").val(),
+    arrival_date: $("#arrival-date").val(),
+    arrival_time: $("#arrival-time").val(),
+    status: "arrived",
+  };
+  $.post("./api/add/add-transaction.php", data)
+    .then(function (response) {
+      alert(response);
+      $("#addTransactionOffcanvas").offcanvas("hide");
       window.location.reload();
-      console.log(data);
-    },
-  });
+    })
+    .catch(function (jqXHR, textStatus, errorThrown) {
+      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+    });
+});
+
+function editTransaction(transaction_id) {
+  $.post(
+    "./api/fetch/get_transaction.php",
+    { transaction_id: transaction_id },
+    function (data) {
+      const transaction = JSON.parse(data);
+
+      $("#edit-transaction-id").val(transaction.transaction_id);
+      $("#edit-to-reference").val(transaction.to_reference);
+      $("#edit-edit-no-of-bales").val(transaction.no_of_bales);
+      $("#edit-origin").val(transaction.origin);
+      $("#edit-kilos").val(transaction.kilos);
+
+      const offcanvas = new bootstrap.Offcanvas(
+        document.getElementById("editTransactionOffcanvas")
+      );
+      offcanvas.show();
+    }
+  );
 }
 
-function ongoing_transaction(transaction_id) {
-  $.ajax({
-    url: "./api/update/update_transaction.php",
-    type: "POST",
-    data: {
-      transaction_id: transaction_id,
-      status: "ongoing",
-    },
-    success: function (data) {
+$("#edit-transaction-form").submit((event) => {
+  event.preventDefault();
+  const data = {
+    transaction_id: $("#edit-transaction-id").val(),
+    arrival_time: $("#edit-arrival-time").val(),
+    arrival_date: $("#edit-arrival-date").val(),
+  };
+  $.post("./api/update/update_transaction.php", data)
+    .then(function (response) {
+      $("#editTransactionOffcanvas").offcanvas("hide");
       window.location.reload();
-      console.log(data);
-    },
-  });
-}
+      console.log(response);
+      // alert(response);
+    })
+    .catch(function (jqXHR, textStatus, errorThrown) {
+      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+    });
+});

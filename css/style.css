@@ -28,3 +28,7 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.btn-primary {
+  background-color: #1f3a69;
+  border: #1f3a69;
+}

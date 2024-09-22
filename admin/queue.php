@@ -70,6 +70,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                 <tr>
                                     <th class="text-center">Queue Number</th>
                                     <th>Plate Number</th>
+                                    <th>Ordinal</th>
+                                    <th>Shift</th>
+                                    <th>Schedule</th>
+                                    <th>Line</th>
                                     <th>Priority</th>
                                     <th>...</th>
                                 </tr>
@@ -84,6 +88,10 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                     <tr onclick="viewQueue(<?= $row['transaction_id'] ?>)" style="cursor: pointer;">
                                         <td class="text-center" scope="row"><?= $queue++ ?></td>
                                         <td class="text-center" scope="row"><?= $row['plate_number'] ?></td>
+                                        <td class="text-center" scope="row"><?= $row['ordinal'] ?></td>
+                                        <td class="text-center" scope="row"><?= $row['shift'] ?></td>
+                                        <td class="text-center" scope="row"><?= $row['schedule'] ?></td>
+                                        <td class="text-center" scope="row"><?= $row['transfer_in_line'] ?></td>
                                         <td class="text-center" scope="row">
                                             <?= $row['priority'] == 1 ? 'High' : 'Low' ?>
                                         </td>

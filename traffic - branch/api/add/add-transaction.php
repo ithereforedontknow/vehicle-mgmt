@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $project_id = $_POST['project_id'];
     $noOfBales = $_POST['noOfBales'];
     $kilos = $_POST['kilos'];
-    $origin = $_POST['origin'];
+    $origin_id = $_POST['origin_id'];
 
     // Prepare and bind parameters
-    $stmt = $conn->prepare("INSERT INTO transaction (to_reference, hauler_id, vehicle_id, driver_id, project_id, no_of_bales, kilos, origin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("siiiiiis", $toReference, $hauler_id, $vehicle_id, $driver_id, $project_id, $noOfBales, $kilos, $origin);
+    $stmt = $conn->prepare("INSERT INTO transaction (to_reference, hauler_id, vehicle_id, driver_id, project_id, no_of_bales, kilos, origin_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("siiiiiis", $toReference, $hauler_id, $vehicle_id, $driver_id, $project_id, $noOfBales, $kilos, $origin_id);
     // Execute the statement
     if ($stmt->execute()) {
         echo "Transaction added successfully";

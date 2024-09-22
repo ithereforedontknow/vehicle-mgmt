@@ -274,7 +274,6 @@ function editProject(project_id) {
   $.post("./api/fetch/get_project.php", { project_id: project_id })
     .then((response) => {
       const project = JSON.parse(response);
-      console.log(project);
       $("#edit-project-id").val(project.project_id);
       $("#edit-project-name").val(project.project_name);
       $("#edit-description").val(project.project_description);
@@ -294,6 +293,45 @@ $("#edit-project").submit((e) => {
   $.post("./api/update/update_project.php", data)
     .then(() => {
       $("#edit-project-modal").modal("hide");
+      window.location.reload();
+      // alert("Project updated successfully");
+    })
+    .catch(() => alert("Error updating project. Please try again."));
+});
+$("#add-origin").submit((e) => {
+  e.preventDefault();
+  const data = {
+    origin: $("#origin").val(),
+  };
+  $.post("./api/add/add-origin.php", data)
+    .then((res) => {
+      $("#add-origin-modal").modal("hide");
+      window.location.reload();
+      // alert(res);
+    })
+    .catch(() => alert("Error adding project. Please try again."));
+});
+function editOrigin(origin_id) {
+  $.post("./api/fetch/get_origin.php", { origin_id: origin_id })
+    .then((response) => {
+      const origin = JSON.parse(response);
+      $("#edit-origin-id").val(origin.origin_id);
+      $("#edit-origin-name").val(origin.origin_name);
+      $("#edit-origin-modal").modal("show");
+    })
+    .catch((error) => {
+      alert(error);
+    });
+}
+$("#edit-origin").submit((e) => {
+  e.preventDefault();
+  const data = {
+    origin_id: $("#edit-origin-id").val(),
+    origin_name: $("#edit-origin-name").val(),
+  };
+  $.post("./api/update/update_origin.php", data)
+    .then(() => {
+      $("#edit-origin-modal").modal("hide");
       window.location.reload();
       // alert("Project updated successfully");
     })

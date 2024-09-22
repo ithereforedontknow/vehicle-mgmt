@@ -51,10 +51,16 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                             <p class="mt-3">Drivers & Helpers</p>
                         </a>
                     </div>
-                    <div class="col-2 text-center" id="drivers">
+                    <div class="col-2 text-center" id="project">
                         <a class="text-decoration-none" href="settings-project.php" style="color: #1b3667">
                             <i class="fa-solid fa-sheet-plastic fa-2xl"></i>
                             <p class="mt-3">Project Description</p>
+                        </a>
+                    </div>
+                    <div class="col-2 text-center" id="origin">
+                        <a class="text-decoration-none" href="settings-origin.php" style="color: #1b3667">
+                            <i class="fa-solid fa-location-dot fa-2xl"></i>
+                            <p class="mt-3">Origin</p>
                         </a>
                     </div>
                     <div class="col-2 text-center" id="demurrage">

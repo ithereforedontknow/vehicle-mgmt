@@ -59,6 +59,8 @@
                         </select>
                         <label for="helper-name">Helper Name</label>
                     </div>
+                </div>
+                <div class="col">
                     <div class="form-floating mb-4">
                         <select class="form-select" name="project" id="project">
                             <?php
@@ -71,8 +73,6 @@
                         </select>
                         <label for="project">Project</label>
                     </div>
-                </div>
-                <div class="col">
                     <div class="form-floating mb-4">
                         <input type="number" class="form-control" id="no-of-bales" name="no-of-bales">
                         <label for="no-of-bales">No of Bales</label>
@@ -82,12 +82,15 @@
                         <label for="kilos">Kilos</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <input type="text" class="form-control" id="origin" name="origin">
-                        <label for="origin">Origin</label>
-                    </div>
-                    <div class="form-floating mb-4">
-                        <input type="date" class="form-control" id="arrival-date" name="arrival-date">
-                        <label for="arrival-date">Arrival Date</label>
+                        <select name="origin" id="origin" class="form-select">
+                            <?php
+                            $sql = "SELECT * FROM `origin`";
+                            $result = mysqli_query($conn, $sql);
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo '<option value="' . $row['origin_id'] . '">' . $row['origin_name'] . '</option>';
+                            }
+                            ?>
+                        </select> <label for="origin">Origin</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="datetime-local" class="form-control" id="arrival-time" name="arrival-time">

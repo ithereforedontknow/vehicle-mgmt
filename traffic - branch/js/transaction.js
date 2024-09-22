@@ -18,7 +18,7 @@ $("#add-transaction").submit(function (event) {
         project_id: $("#project_id").val(),
         noOfBales: $("#no-of-bales").val(),
         kilos: $("#kilos").val(),
-        origin: $("#origin").val(),
+        origin_id: $("#origin_id").val(),
       };
       $.post("./api/add/add-transaction.php", data)
         .then((result) => {

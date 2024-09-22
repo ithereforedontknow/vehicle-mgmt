@@ -41,28 +41,40 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                         <tr>
                             <th class="text-center" scope="col">ID</th>
                             <th class="text-center" scope="col">TO Reference</th>
+                            <th class="text-center" scope="col">Hauler</th>
+                            <th class="text-center" scope="col">Plate Number</th>
+                            <th class="text-center" scope="col">Project</th>
                             <th class="text-center" scope="col">No. Of Bales</th>
                             <th class="text-center" scope="col">Kilos</th>
                             <th class="text-center" scope="col">Origin</th>
                             <th class="text-center" scope="col">Status</th>
-                            <th class="text-center" scope="col">...</th>
+                            <th class="text-center" scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody id="transaction-data">
                         <?php
-                        $sql = "SELECT * FROM Transaction WHERE status = 'departed' ORDER BY transaction_id DESC";
+                        $sql = "SELECT * FROM Transaction INNER JOIN hauler ON transaction.hauler_id = hauler.hauler_id INNER JOIN vehicle ON transaction.vehicle_id = vehicle.vehicle_id INNER JOIN project ON transaction.project_id = project.project_id INNER JOIN origin ON transaction.origin_id = origin.origin_id WHERE status = 'departed' ORDER BY transaction_id DESC";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                         ?>
-                                <tr onclick="editTransaction(<?= $row['transaction_id'] ?>)" style="cursor: pointer;">
+                                <tr>
                                     <td class='text-center'><?= $row['transaction_id'] ?></td>
                                     <td class='text-center'><?= $row['to_reference'] ?></td>
+                                    <td class='text-center'><?= $row['hauler_name'] ?></td>
+                                    <td class='text-center'><?= $row['plate_number'] ?></td>
+                                    <td class='text-center'><?= $row['project_name'] ?></td>
                                     <td class='text-center'><?= $row['no_of_bales'] ?></td>
                                     <td class='text-center'><?= $row['kilos'] ?></td>
-                                    <td class='text-center'><?= $row['origin'] ?></td>
+                                    <td class='text-center'><?= $row['origin_name'] ?></td>
                                     <td class='text-center'><?= $row['status'] ?></td>
-                                    <td class='text-center'><i class="fa-solid fa-arrow-right"></i></td>
+                                    <td class="text-center">
+                                        <form id="edit-transaction-form" class="d-flex justify-content-center align-items-center">
+                                            <input type="hidden" id="edit-transaction-id" name="edit-transaction-id" value="<?= $row['transaction_id'] ?>">
+                                            <input type="datetime-local" class="form-control" id="edit-arrival-time" name="edit-arrival-time" required style="width: auto;">
+                                            <button type="submit" class="btn btn-primary ms-2">Save</button>
+                                        </form>
+                                    </td>
                                 </tr>
                         <?php
                             }
@@ -78,6 +90,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
         ?>
         <script src="../public/js/jquery.min.js"></script>
         <script src="../public/js/bootstrap.bundle.min.js"></script>
+        <script src="../public/js/sweetalert2.all.min.js"></script>
         <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
         <script src="js/admin.js"></script>
         <script src="js/transaction.js"></script>

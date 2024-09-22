@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-3 shadow">
-    <button class="btn btn-dark" id="sidebarToggle">
-        <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg fixed-top px-3 shadow">
+    <button class="btn mx-2" id="sidebarToggle">
+        <i class="fa-solid fa-bars" style="color: #ffffff;"></i>
     </button>
     <img src="../assets/Untitled-1.png" style="width: 40px;">
     <a class="navbar-brand ms-3 fw-bold">Integrated In-house Vehicle Management System</a>
@@ -9,7 +9,7 @@
             <!-- Notification Dropdown -->
             <li class="nav-item dropdown ">
                 <a class="nav-link" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-bell fa-lg"></i>
+                    <i class="fa-solid fa-bell fa-lg" style="color:#ffffff"></i>
                     <!-- Badge showing the number of notifications -->
                     <span class="badge bg-danger rounded-circle">
                         <?php
@@ -60,7 +60,7 @@
             <div class="dropdown">
                 <li class="nav-item dropdown bg">
                     <a href="#" class="nav-link " data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user fa-lg"></i>
+                        <i class="fa-solid fa-user fa-lg" style="color:#ffffff"></i>
                         <!-- <img src="../../assets/universal_corporation_logo.jpg" class="img-circle" alt="" width="32"> -->
                         <!-- <span><?php echo $_SESSION['username']; ?></span> -->
                     </a>
@@ -77,7 +77,7 @@
         </ul>
     </div>
 </nav>
-<div class="sidebar bg-dark shadow" id="sidebar">
+<div class="sidebar shadow" id="sidebar">
     <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; height: 100svh; ">
         <ul class="nav nav-pills flex-column mb-3">
             <li class="nav-item mb-2">
@@ -93,7 +93,7 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link text-white" href="view_transaction.php">
+                <a class="nav-link text-white" href="view-transaction.php">
                     <i class="fa-solid fa-scroll fa-lg me-2"></i>
                     Vehicle Transactions
                 </a>
@@ -107,11 +107,16 @@
             </li>
             <li class="nav-item mb-2">
                 <a href="unloading.php" class="nav-link text-white">
-                    <i class="fa-solid fa-clipboard-list fa-lg me-2"></i> Vehicle Unloading
+                    <i class="fa-solid fa-spinner fa-lg me-2"></i> Vehicle Unloading
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a href="report_generation.php" class="nav-link text-white">
+                <a href="finished-transactions.php" class="nav-link text-white">
+                    <i class="fa-solid fa-receipt fa-lg me-2"></i> Finished Transactions
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="report-generation.php" class="nav-link text-white">
                     <i class="fa-solid fa-print fa-lg me-2"></i>
                     Report Generation
                 </a>

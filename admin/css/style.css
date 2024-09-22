@@ -4,13 +4,22 @@ body {
   padding-top: 56px;
   font-family: "Lato", sans-serif;
 }
+.navbar {
+  background-color: #15294e;
+}
+.navbar-brand {
+  color: white;
+}
+.navbar-brand:hover {
+  color: white;
+}
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   width: 280px;
-  background-color: #1b3667;
+  background-color: #15294e;
   transition: all 0.3s;
   padding-top: 56px;
 }
@@ -22,14 +31,14 @@ body {
 .sidebar .nav-link {
   color: #fff;
   padding: 15px 20px; /* Increase padding for larger buttons */
-  transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
+  transition: background-color 0.05s, color 0.05s; /* Transition for hover effect */
 }
 .sidebar .nav-link.active {
-  background-color: #15294e;
+  background-color: #0f1d37;
   color: #ffffff;
 }
 .sidebar .nav-link:hover {
-  background-color: #15294e;
+  background-color: #0f1d37;
   color: #ffffff;
 }
 
@@ -50,7 +59,7 @@ body {
   transform: rotate(180deg);
 }
 .greetings-item {
-  border-left: 4px solid #1b3667;
+  border-left: 4px solid #15294e;
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 4px;
@@ -63,7 +72,7 @@ body {
 } */
 
 .greetings-icon {
-  color: #1b3667;
+  color: #15294e;
   margin-right: 10px;
 }
 
@@ -73,7 +82,7 @@ body {
 
 .notification-item {
   background-color: #f8f9fa;
-  border-left: 4px solid #1b3667;
+  border-left: 4px solid #15294e;
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 4px;
@@ -86,7 +95,7 @@ body {
 }
 
 .notification-icon {
-  color: #1b3667;
+  color: #15294e;
   margin-right: 10px;
 }
 

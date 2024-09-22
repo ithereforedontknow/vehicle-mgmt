@@ -38,40 +38,66 @@ $("#add-transaction").submit(function (event) {
     });
 });
 
-function editTransaction(transaction_id) {
-  $.post(
-    "./api/fetch/get_transaction.php",
-    { transaction_id: transaction_id },
-    function (data) {
-      const transaction = JSON.parse(data);
-
-      $("#edit-transaction-id").val(transaction.transaction_id);
-      $("#edit-to-reference").val(transaction.to_reference);
-      $("#edit-edit-no-of-bales").val(transaction.no_of_bales);
-      $("#edit-origin").val(transaction.origin);
-      $("#edit-kilos").val(transaction.kilos);
-
-      const offcanvas = new bootstrap.Offcanvas(
-        document.getElementById("editTransactionOffcanvas")
-      );
-      offcanvas.show();
-    }
-  );
-}
-
 $("#edit-transaction-form").submit((event) => {
   event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#1c3464",
+    cancelButtonColor: "#6c757d",
+    cancelButtonText: "No",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const data = {
+        transaction_id: $("#edit-transaction-id").val(),
+        arrival_time: $("#edit-arrival-time").val(),
+        arrival_date: $("#edit-arrival-date").val(),
+      };
+      $.post("./api/update/update_transaction.php", data)
+        .then(function (response) {
+          window.location.reload();
+          // alert(response);
+        })
+        .catch(function (jqXHR, textStatus, errorThrown) {
+          alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+        });
+    }
+  });
+});
+function doneTransaction(transaction_id) {
+  $("#edit-transaction-id").val(transaction_id);
+  let now = new Date();
+
+  // Format date and time as YYYY-MM-DDTHH:MM for local time
+  let year = now.getFullYear();
+  let month = (now.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based, so add 1
+  let day = now.getDate().toString().padStart(2, "0");
+  let hours = now.getHours().toString().padStart(2, "0");
+  let minutes = now.getMinutes().toString().padStart(2, "0");
+
+  // Combine to form the datetime-local format
+  let formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+  // Set the value of the datetime-local inputs
+  $("#unloading-end").val(formattedDateTime);
+  $("#time-departure").val(formattedDateTime);
+  $("#edit-transaction-modal").modal("show");
+}
+$("#edit-transaction").submit((e) => {
+  e.preventDefault();
+
   const data = {
     transaction_id: $("#edit-transaction-id").val(),
-    arrival_time: $("#edit-arrival-time").val(),
-    arrival_date: $("#edit-arrival-date").val(),
+    unloading_time_end: $("#unloading-end").val(),
+    time_of_departure: $("#time-departure").val(),
   };
-  $.post("./api/update/update_transaction.php", data)
+  $.post("./api/update/update_unloading.php", data)
     .then(function (response) {
-      $("#editTransactionOffcanvas").offcanvas("hide");
-      window.location.reload();
-      console.log(response);
       // alert(response);
+      $("#edit-transaction-modal").modal("hide");
+      window.location.reload();
     })
     .catch(function (jqXHR, textStatus, errorThrown) {
       alert("AJAX call failed: " + textStatus + ", " + errorThrown);

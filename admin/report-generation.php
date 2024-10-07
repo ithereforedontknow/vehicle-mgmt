@@ -16,27 +16,41 @@ if (isset($_GET['export']) && $_GET['export'] == 'true') {
 
 function exportToExcel($conn)
 {
-    // SQL query to fetch data for export
-    $query = "SELECT * FROM transaction "; // Replace with your actual query
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="report.csv";');
+
+    // Open output stream
+    $output = fopen('php://output', 'w');
+
+    // Write header row
+    fputcsv($output, ['TO Reference', 'Hauler', 'Plate Number', 'Driver Name', 'Truck Type', 'Prior', 'Transfer in Line', 'Unloading Status', 'Ordinal', 'Shift', 'Schedule', 'Transfer-in Queue']);
+
+    // Fetch data from your database
+    $query = "SELECT * FROM transaction"; // Adjust this query
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
-        // Set headers for file download
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="report.xls"');
-        header('Cache-Control: max-age=0');
-
-        // Output table structure as the first row
-        echo "Column1\tColumn2\tColumn3\t...\n"; // Replace with your actual column names
-
-        // Loop through the data and output each row
         while ($row = $result->fetch_assoc()) {
-            echo $row['column1'] . "\t" . $row['column2'] . "\t" . $row['column3'] . "\t...\n"; // Replace with your actual columns
+            // Write each row to the CSV
+            fputcsv($output, [
+                $row['to_reference'],
+                $row['hauler'],
+                $row['plate_number'],
+                $row['driver_name'],
+                $row['truck_type'],
+                $row['prior'],
+                $row['transfer_in_line'],
+                $row['unloading_status'],
+                $row['ordinal'],
+                $row['shift'],
+                $row['schedule'],
+                $row['transfer_in_queue']
+            ]);
         }
-    } else {
-        echo "No data available";
     }
 
+    // Close the output stream
+    fclose($output);
     exit;
 }
 ?>

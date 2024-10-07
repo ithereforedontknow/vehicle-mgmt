@@ -25,7 +25,6 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
 
 <body class="bg-light">
     <?php include_once('./navbar/navbar.php'); ?>
-
     <div class="content" id="content">
         <div class="container">
             <h1 class="display-5 mb-3 fw-bold">Finished Transactions</h1>
@@ -48,8 +47,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                         $sql = "SELECT * FROM Transaction 
                         inner join unloading on transaction.transaction_id = unloading.transaction_id 
                         inner join arrival on transaction.transaction_id = arrival.transaction_id
-                        join demurrage
-                        WHERE status = 'done' ORDER BY time_of_departure DESC";
+                        WHERE status = 'done' ORDER BY unloading.time_of_departure DESC";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
@@ -60,31 +58,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                     <td class='text-center'><?= $row['time_of_departure'] ?></td>
                                     <td class='text-center'><?= $row['unloading_time_end'] ?></td>
 
-                                    <td class='text-center'>&#8369;
-                                        <?php
-                                        $transactionCreatedAt = strtotime($row['created_at']);
-                                        $timeOfEntry = strtotime($row['time_of_entry']);
-
-                                        if (is_numeric($transactionCreatedAt) && is_numeric($timeOfEntry)) {
-                                            // Calculate the time difference in seconds
-                                            $timeDifference = $timeOfEntry - $transactionCreatedAt;
-                                            // Convert time difference to hours
-                                            $hours = floor($timeDifference / 3600);
-                                            // echo "Total Hours: " . $hours . "<br>";
-                                            if ($hours > 48) {
-                                                $hours -= 48; // Remove the first 48 hours from the calculation
-                                                $demurrage = $row['demurrage']; // Assuming demurrage is 102 per hour
-                                                $total = $hours * $demurrage;
-                                                echo $total;
-                                            } else {
-                                                echo "0";
-                                            }
-                                        } else {
-                                            echo "Invalid time format";
-                                        }
-                                        ?>
-
-                                    </td>
+                                    <td class='text-center'>&#8369;<?= $row['demurrage'] ?></td>
                                 </tr>
                         <?php
                             }

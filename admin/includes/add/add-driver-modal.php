@@ -20,7 +20,7 @@
                         <label for="driver-lname">Last Name</label>
                     </div>
                     <div class="form-floating">
-                        <input type="tel" class="form-control" id="driver-phone" name="driver-phone" required>
+                        <input type="tel" class="form-control" id="driver-phone" name="driver-phone" required maxlength="11">
                         <label for="driver-phone">Phone Number</label>
                     </div>
                 </form>

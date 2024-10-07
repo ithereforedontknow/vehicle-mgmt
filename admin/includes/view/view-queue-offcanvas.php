@@ -11,37 +11,41 @@
                 <div class="col">
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-to-reference" name="view-to-reference" disabled>
-                        <label for="queue-plate-number">TO Reference</label>
+                        <label for="view-to-reference">TO Reference</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-no-of-bales" name="view-no-of-bales" disabled>
-                        <label for="queue-plate-number">No. of Bales</label>
+                        <label for="view-no-of-bales">No. of Bales</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-kilos" name="view-kilos" disabled>
-                        <label for="queue-plate-number">Kilos</label>
+                        <label for="view-kilos">Kilos</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-origin" name="view-origin" disabled>
-                        <label for="queue-plate-number">Origin</label>
+                        <label for="view-origin">Origin</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="view-project" name="view-project" disabled>
+                        <label for="view-project">Project</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-transfer-in-line" name="view-transfer-in-line" disabled>
-                        <label for="queue-plate-number">Transfer in Line</label>
+                        <label for="view-transfer-in-line">Transfer in Line</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-ordinal" name="view-ordinal" disabled>
-                        <label for="queue-plate-number">Ordinal</label>
+                        <label for="view-ordinal">Ordinal</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-shift" name="view-shift" disabled>
-                        <label for="queue-plate-number">Shift</label>
+                        <label for="view-shift">Shift</label>
                     </div>
                     <div class="form-floating mb-4">
                         <input type="text" class="form-control" id="view-schedule" name="view-schedule" disabled>
-                        <label for="queue-plate-number">Schedule</label>
+                        <label for="view-schedule">Schedule</label>
                     </div>
 
                 </div>
@@ -50,6 +54,6 @@
     </div>
     <div class="offcanvas-footer d-flex justify-content-end p-3 border-top">
         <button type="button" class="btn btn-dark me-2" data-bs-dismiss="offcanvas">Cancel</button>
-        <button type="submit" class="btn btn-primary" form="add-unloading-form">Add to Unloading</button>
+        <button type="submit" class="btn btn-primary" form="add-unloading-form">Enter</button>
     </div>
 </div>

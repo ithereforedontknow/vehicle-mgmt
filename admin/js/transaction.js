@@ -13,6 +13,7 @@ $(document).ready(function () {
 });
 $("#add-transaction").submit(function (event) {
   event.preventDefault();
+
   const data = {
     to_reference: $("#to-reference").val(),
     hauler_id: $("#hauler").val(),
@@ -23,13 +24,13 @@ $("#add-transaction").submit(function (event) {
     no_of_bales: $("#no-of-bales").val(),
     kilos: $("#kilos").val(),
     origin: $("#origin").val(),
-    arrival_date: $("#arrival-date").val(),
     arrival_time: $("#arrival-time").val(),
     status: "arrived",
   };
+
   $.post("./api/add/add-transaction.php", data)
     .then(function (response) {
-      alert(response);
+      // alert(response);
       $("#addTransactionOffcanvas").offcanvas("hide");
       window.location.reload();
     })
@@ -102,4 +103,18 @@ $("#edit-transaction").submit((e) => {
     .catch(function (jqXHR, textStatus, errorThrown) {
       alert("AJAX call failed: " + textStatus + ", " + errorThrown);
     });
+});
+$("#no-of-bales").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
+});
+$("#kilos").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
 });

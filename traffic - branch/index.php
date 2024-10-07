@@ -28,8 +28,8 @@ if (isset($_SESSION['userlevel']) && $_SESSION['userlevel'] !== 'traffic(branch)
     ?>
 
     <div class="content" id="content">
-        <div class="container">
-            <h1 class="display-5 mb-3 fw-bold">User Management</h1>
+        <div class="container p-5">
+            <h1 class="display-5 mb-3 fw-bold">Transaction Form</h1>
             <form id="add-transaction">
                 <div class="row">
                     <div class="col">
@@ -73,7 +73,18 @@ if (isset($_SESSION['userlevel']) && $_SESSION['userlevel'] !== 'traffic(branch)
                             </select>
                             <label for="driver-name" class="form-label">Driver Name</label>
                         </div>
-
+                        <div class="form-floating mb-4">
+                            <select class="form-select" name="helper_id" id="helper_id" required>
+                                <?php
+                                $sql = "SELECT * FROM `helper`";
+                                $result = mysqli_query($conn, $sql);
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo '<option value="' . $row['helper_id'] . '">' . $row['helper_fname'] . ' ' . $row['helper_lname'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <label for="driver-name" class="form-label">Helper Name</label>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="form-floating mb-4">
@@ -87,7 +98,6 @@ if (isset($_SESSION['userlevel']) && $_SESSION['userlevel'] !== 'traffic(branch)
                                 ?>
                             </select>
                             <label for="project" class="form-label">Project</label>
-
                         </div>
 
                         <div class="form-floating mb-4">
@@ -110,7 +120,14 @@ if (isset($_SESSION['userlevel']) && $_SESSION['userlevel'] !== 'traffic(branch)
                             </select>
                             <label for="origin" class="form-label">Origin</label>
                         </div>
+                        <div class="form-floating mb-4">
+                            <input type="datetime-local" class="form-control" name="time-departure" id="time-departure" required>
+                            <label for="time-departure" class="form-label">Time Of Departure</label>
+                        </div>
+                    </div>
+                    <div>
                         <button type="submit" class="btn btn-primary float-end">Save</button>
+                        <button type="button" class="btn btn-secondary float-end me-2" id="clear">Clear</button>
                     </div>
                 </div>
             </form>

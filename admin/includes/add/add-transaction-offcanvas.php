@@ -8,11 +8,11 @@
             <div class="row">
                 <div class="col">
                     <div class="form-floating mb-4">
-                        <input type="text" class="form-control" id="to-reference" name="to-reference">
+                        <input type="text" class="form-control" id="to-reference" name="to-reference" required>
                         <label for="to-reference">TO Reference #</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <select class="form-select" name="hauler" id="hauler">
+                        <select class="form-select" name="hauler" id="hauler" required>
                             <?php
                             $sql = "SELECT * FROM `hauler`";
                             $result = mysqli_query($conn, $sql);
@@ -24,7 +24,7 @@
                         <label for="hauler">Hauler</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <select class="form-select" name="plate-number" id="plate-number">
+                        <select class="form-select" name="plate-number" id="plate-number" required>
                             <?php
                             $sql = "SELECT * FROM `vehicle`";
                             $result = mysqli_query($conn, $sql);
@@ -36,7 +36,7 @@
                         <label for="plate-number">Plate Number</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <select class="form-select" name="driver-name" id="driver-name">
+                        <select class="form-select" name="driver-name" id="driver-name" required>
                             <?php
                             $sql = "SELECT * FROM `driver`";
                             $result = mysqli_query($conn, $sql);
@@ -48,7 +48,7 @@
                         <label for="driver-name">Driver Name</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <select class="form-select" name="helper-name" id="helper-name">
+                        <select class="form-select" name="helper-name" id="helper-name" required>
                             <?php
                             $sql = "SELECT * FROM `helper`";
                             $result = mysqli_query($conn, $sql);
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col">
                     <div class="form-floating mb-4">
-                        <select class="form-select" name="project" id="project">
+                        <select class="form-select" name="project" id="project" required>
                             <?php
                             $sql = "SELECT * FROM `project`";
                             $result = mysqli_query($conn, $sql);
@@ -74,15 +74,15 @@
                         <label for="project">Project</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <input type="number" class="form-control" id="no-of-bales" name="no-of-bales">
+                        <input type="number" class="form-control" id="no-of-bales" name="no-of-bales" required>
                         <label for="no-of-bales">No of Bales</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <input type="number" class="form-control" id="kilos" name="kilos">
+                        <input type="number" class="form-control" id="kilos" name="kilos" required>
                         <label for="kilos">Kilos</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <select name="origin" id="origin" class="form-select">
+                        <select name="origin" id="origin" class="form-select" required>
                             <?php
                             $sql = "SELECT * FROM `origin`";
                             $result = mysqli_query($conn, $sql);
@@ -93,7 +93,7 @@
                         </select> <label for="origin">Origin</label>
                     </div>
                     <div class="form-floating mb-4">
-                        <input type="datetime-local" class="form-control" id="arrival-time" name="arrival-time">
+                        <input type="datetime-local" class="form-control" id="arrival-time" name="arrival-time" required>
                         <label for="arrival-time">Arrival Time</label>
                     </div>
                 </div>
@@ -102,6 +102,6 @@
     </div>
     <div class="offcanvas-footer d-flex justify-content-end p-3 border-top sticky-bottom bg-white">
         <button type="button" class="btn btn-dark me-2" data-bs-dismiss="offcanvas">Cancel</button>
-        <button type="submit" class="btn btn-primary" form="add-transaction">Add to Unloading</button>
+        <button type="submit" class="btn btn-primary" form="add-transaction">Add to Arrived</button>
     </div>
 </div>

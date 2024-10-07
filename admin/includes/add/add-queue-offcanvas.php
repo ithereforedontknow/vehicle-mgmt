@@ -44,6 +44,10 @@
                 </select>
                 <label for="queue-schedule" class="form-label">Schedule</label>
             </div>
+            <div class="form-floating mb-4">
+                <input type="number" class="form-control" id="queue-number" name="queue-number" required>
+                <label for="queue-number" class="form-label">Vehicle Pass</label>
+            </div>
             <div class="form-floating">
                 <select name="queue-priority" class="form-select" id="queue-priority">
                     <option value="1">High</option>

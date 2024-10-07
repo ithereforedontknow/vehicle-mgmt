@@ -12,9 +12,10 @@ $("#add-user-form").submit((event) => {
     title: "Are you sure?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, add it!",
+    confirmButtonColor: "#1c3464",
+    cancelButtonColor: "#6c757d",
+    cancelButtonText: "No",
+    confirmButtonText: "Yes",
   }).then((result) => {
     if (result.isConfirmed) {
       const data = {
@@ -27,12 +28,19 @@ $("#add-user-form").submit((event) => {
         status: $("#add-status").val(),
       };
       $.post("./api/add/add-user.php", data)
-        .then((response) => {
-          Swal.fire("Added!", "User has been added.", "success");
-          $("#addUserOffcanvas").offcanvas("hide");
-          window.location.reload();
+        .done((response) => {
+          Swal.fire({
+            title: "Added!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+            didClose: () => {
+              $("#addUserOffcanvas").offcanvas("hide");
+              window.location.reload();
+            },
+          });
         })
-        .catch((error) => alert(error));
+        .fail((error) => alert(error));
     }
   });
 });
@@ -64,27 +72,42 @@ function editUser(userId) {
 
 $("#edit-user-form").on("submit", function (event) {
   event.preventDefault();
-
-  // Serialize the form data
-  const formData = {
-    id: $("#edit-user-id").val(),
-    username: $("#edit-username").val(),
-    fname: $("#edit-fname").val(),
-    mname: $("#edit-mname").val(),
-    lname: $("#edit-lname").val(),
-    password: $("#edit-password").val(),
-    userlevel: $("#edit-userlevel").val(),
-    status: $("#edit-status").val(),
-  };
-
-  // Send the updated user data to the server
-  $.post("./api/update/update_user.php", formData)
-    .then((response) => {
-      $("addUserOffcanvas").offcanvas("hide");
-      console.log(response);
-      location.reload(); // Reload the page to see the updated user list
-    })
-    .catch((jqXHR, textStatus, errorThrown) => {
-      alert(`Failed to update user: ${textStatus}, ${errorThrown}`);
-    });
+  Swal.fire({
+    title: "Are you sure?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#1c3464",
+    cancelButtonColor: "#6c757d",
+    cancelButtonText: "No",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const data = {
+        id: $("#edit-user-id").val(),
+        username: $("#edit-username").val(),
+        fname: $("#edit-fname").val(),
+        mname: $("#edit-mname").val(),
+        lname: $("#edit-lname").val(),
+        password: $("#edit-password").val(),
+        userlevel: $("#edit-userlevel").val(),
+        status: $("#edit-status").val(),
+      };
+      $.post("./api/update/update_user.php", data)
+        .done((response) => {
+          Swal.fire({
+            title: "Updated!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1000,
+            didClose: () => {
+              $("#editUserOffcanvas").offcanvas("hide");
+              window.location.reload();
+            },
+          });
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+          alert(`Failed to update user: ${textStatus}, ${errorThrown}`);
+        });
+    }
+  });
 });

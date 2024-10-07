@@ -14,7 +14,7 @@
                     <span class="badge bg-danger rounded-circle">
                         <?php
                         $currentTime = date('Y-m-d H:i:s');
-                        $transactionCountQuery = "SELECT COUNT(*) FROM `transaction` WHERE created_at >= '$currentTime' AND status = 'departed'";
+                        $transactionCountQuery = "SELECT COUNT(*) FROM transaction WHERE created_at >= '$currentTime' AND status = 'departed'";
                         $result = mysqli_query($conn, $transactionCountQuery);
                         $transactionCount = mysqli_fetch_array($result)[0];
                         echo $transactionCount;
@@ -33,7 +33,7 @@
                     ?>
                             <li>
                                 <a class="dropdown-item" href="#">
-                                    <?= "{$transaction['to_reference']} has departed from {$transaction['origin']}" ?>
+                                    <?= "{$transaction['to_reference']} has departed from {$transaction['origin_name']}" ?>
                                     <div>
                                         <?= date('F j, Y, g:i a', strtotime($transaction['created_at'])) ?>
                                     </div>

@@ -43,18 +43,16 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                             <th class="text-center" scope="col">Time of Entry</th>
                             <th class="text-center" scope="col">Unloading Time Start</th>
                             <th class="text-center" scope="col">Time in waiting area</th>
-                            <!-- <th class="text-center" scope="col">Demurrage</th> -->
+                            <th class="text-center" scope="col">Demurrage</th>
                             <th class="text-center" scope="col">Status</th>
                             <th class="text-center" scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody id="transaction-data">
                         <?php
-                        $sql = "SELECT * FROM Transaction 
-                        inner join unloading on transaction.transaction_id = unloading.transaction_id 
-                        inner join arrival on transaction.transaction_id = arrival.transaction_id
-                        join demurrage
-                        WHERE status = 'ongoing' ORDER BY transaction.transaction_id DESC";
+                        $sql = "SELECT * FROM Transaction
+                        inner join unloading on transaction.transaction_id = unloading.transaction_id
+                        WHERE status = 'standby' OR status = 'ongoing' ORDER BY time_of_entry DESC";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
@@ -65,57 +63,32 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                     <td class='text-center'><?= $row['no_of_bales'] ?></td>
                                     <td class='text-center'><?= $row['kilos'] ?></td>
                                     <td class='text-center'><?= $row['time_of_entry'] ?></td>
-                                    <td class='text-center'><?= $row['unloading_time_start'] ?></td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <?php
-                                        // TODO : mali ang computation
-                                        $arrival_time = strtotime($row['arrival_time']);  // Convert to timestamp
-                                        $time_of_entry = strtotime($row['time_of_entry']);  // Convert to timestamp
-
-                                        if (is_numeric($arrival_time) && is_numeric($time_of_entry)) {
-                                            $time_difference = $time_of_entry - $arrival_time;
-
-                                            // Calculate hours, minutes, and seconds
-                                            $hours = floor($time_difference / 3600);
-                                            $minutes = floor(($time_difference % 3600) / 60);
-                                            $seconds = $time_difference % 60;
-
-                                            echo "{$hours}h {$minutes}m {$seconds}s";
+                                        if ($row['status'] === 'standby') {
+                                        ?>
+                                            <form class="unloading-start-form d-flex justify-content-center align-items-center">
+                                                <input type="hidden" name="unloading-start-id" value="<?= $row['transaction_id'] ?>">
+                                                <input type="datetime-local" class="form-control" name="unloading-start-time" style="width: auto;" required>
+                                                <button type="submit" class="btn btn-primary ms-2">Save</button>
+                                            </form>
+                                        <?php
                                         } else {
-                                            echo "Invalid time format";
+                                            echo $row['unloading_time_start'];
                                         }
                                         ?>
                                     </td>
-                                    <!-- <td class='text-center'>&#8369;
-                                        <?php
-                                        $transactionCreatedAt = strtotime($row['created_at']);
-                                        $timeOfEntry = strtotime($row['time_of_entry']);
-
-                                        if (is_numeric($transactionCreatedAt) && is_numeric($timeOfEntry)) {
-                                            // Calculate the time difference in seconds
-                                            $timeDifference = $timeOfEntry - $transactionCreatedAt;
-                                            // Convert time difference to hours
-                                            $hours = floor($timeDifference / 3600);
-                                            echo "Total Hours: " . $hours . "<br>";
-                                            if ($hours > 48) {
-                                                $hours -= 48; // Remove the first 48 hours from the calculation
-                                                $demurrage = $row['demurrage']; // Assuming demurrage is 102 per hour
-                                                $total = $hours * $demurrage;
-                                                echo "Demurrage Total: " . $total;
-                                            } else {
-                                                echo "Demurrage Total: 0";
-                                            }
-                                        } else {
-                                            echo "Invalid time format";
-                                        }
-                                        ?>
-
-                                    </td> -->
+                                    <td class='text-center'><?= $row['time_spent_waiting_area'] . " hours" ?></td>
+                                    <td class='text-center'>&#8369;<?= $row['demurrage'] ?></td>
                                     <td class='text-center'><?= $row['status'] ?></td>
-                                    <td class="text-center"><button class="btn btn-primary" onclick="doneTransaction(<?= $row['transaction_id'] ?>)">Done</button></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-primary" onclick="doneTransaction(<?= $row['transaction_id'] ?>)">Done</button>
+                                    </td>
                                 </tr>
                         <?php
                             }
+                        } else {
+                            echo "<tr><td colspan='10'>0 results</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -125,13 +98,13 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
         <?php
         include_once('includes/edit/edit-transaction-modal.php');
         ?>
-        <script src="../public/js/bootstrap.bundle.min.js"></script>
         <script src="../public/js/jquery.min.js"></script>
+        <script src="../public/js/bootstrap.bundle.min.js"></script>
         <script src="../public/js/sweetalert2.all.min.js"></script>
         <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
         <script src="js/admin.js"></script>
+        <script src="js/unloading.js"></script>
         <script src="js/transaction.js"></script>
-
     </div>
 </body>
 

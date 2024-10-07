@@ -6,13 +6,13 @@
     </div>
     <div class="offcanvas-body">
         <?php
-        $query = "SELECT * FROM `transaction` WHERE status = 'departed' OR status = 'arrived' ORDER BY transaction_id DESC";
+        $query = "SELECT * FROM transaction, origin WHERE status = 'departed' OR status = 'arrived' ORDER BY transaction_id DESC";
         $result = mysqli_query($conn, $query);
         if (mysqli_num_rows($result) > 0) {
             while ($transaction = mysqli_fetch_assoc($result)) {
         ?>
                 <div class="notification-item">
-                    <h5><i class="fas fa-truck notification-icon"></i><?= $transaction['to_reference'] ?> has departed from <?= $transaction['origin'] ?></h5>
+                    <h5><i class="fas fa-truck notification-icon"></i><?= $transaction['to_reference'] ?> has departed from <?= $transaction['origin_name'] ?></h5>
                     <small class="text-muted">Transaction ID: <?= $transaction['transaction_id'] ?></small>
                     <small class="text-muted float-end"><?= $transaction['created_at'] ?></small>
                 </div>

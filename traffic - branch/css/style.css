@@ -4,20 +4,6 @@ body {
   padding-top: 56px;
   font-family: "Lato", sans-serif;
 }
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 280px;
-  background-color: #1b3667;
-  transition: all 0.3s;
-  padding-top: 56px;
-}
-
-.sidebar.hidden {
-  left: -300px;
-}
 
 .sidebar .nav-link {
   color: #fff;
@@ -31,12 +17,6 @@ body {
 .sidebar .nav-link:hover {
   background-color: #15294e;
   color: #ffffff;
-}
-
-.content {
-  transition: margin-left 0.3s;
-  margin-left: 280px;
-  padding: 20px;
 }
 
 .content.full-width {
@@ -92,5 +72,5 @@ body {
 
 .btn-primary {
   background-color: #1b3667;
-  border: #1b3667;
+  border: inherit;
 }

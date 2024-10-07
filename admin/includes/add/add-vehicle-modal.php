@@ -25,7 +25,7 @@
                         <input type="text" class="form-control" id="plate-no" name="plate-no" required>
                         <label for="plate-no">Plate Number</label>
                     </div>
-                    <div class="form-floating mb-4">
+                    <div class="form-floating">
                         <select name="truck-type" id="truck-type" class="form-select" onchange="showOthersType()" required>
                             <option value="Trailer">Trailer</option>
                             <option value="Ten Wheeler">Ten Wheeler</option>
@@ -35,10 +35,10 @@
                         </select>
                         <label for="truck-type">Truck Type</label>
                     </div>
-                    <div class="form-floating" id="others-type-container" style="display: none;">
+                    <!-- <div class="form-floating mt-4" id="others-type-container" style="display: none;">
                         <input type="text" class="form-control" id="others-type" name="others-type" required>
                         <label for="others-type">Others</label>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="modal-footer">

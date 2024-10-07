@@ -47,11 +47,12 @@ function showOthersType() {
   const othersTypeInput = $("#others-type");
 
   if ($("#truck-type").val() === "Others") {
-    othersTypeContainer.show();
-    othersTypeInput.attr("required", true); // Add required attribute
+    othersTypeContainer.show(); // Show the container
+    othersTypeInput.prop("required", true); // Set the 'required' attribute
   } else {
-    othersTypeContainer.hide();
-    othersTypeInput.removeAttr("required"); // Remove required attribute
+    othersTypeContainer.hide(); // Hide the container
+    othersTypeInput.prop("required", false); // Remove 'required' attribute
+    othersTypeInput.val(""); // Clear the value to prevent submission errors
   }
 }
 
@@ -64,7 +65,8 @@ $("#add-vehicle").submit((e) => {
   const data = {
     hauler,
     plateNumber,
-    truckType: truckType === "Others" ? $("#others-type").val() : truckType,
+    truckType: truckType,
+    // === "Others" ? $("#others-type").val() : truckType,
   };
 
   $.post("./api/add/add-vehicle.php", data)
@@ -353,4 +355,39 @@ $(document).ready(function () {
   $("#project-table").DataTable({
     pageLength: 5,
   });
+});
+$("#driver-phone").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
+});
+$("#edit-driver-phone").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
+});
+$("#helper-phone").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
+});
+$("#edit-helper-phone").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
+});
+$("#demurrage_name").on("input", function () {
+  $(this).val(
+    $(this)
+      .val()
+      .replace(/[^0-9]/g, "")
+  ); // Remove non-numeric characters
 });

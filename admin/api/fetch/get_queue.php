@@ -7,7 +7,7 @@ $response = array();
 
 if (isset($_POST['transaction_id'])) {
     $transaction_id = $_POST['transaction_id'];
-    $sql = "SELECT * FROM queue INNER JOIN transaction ON queue.transaction_id = transaction.transaction_id WHERE transaction.transaction_id = ?";
+    $sql = "SELECT * FROM queue INNER JOIN transaction ON queue.transaction_id = transaction.transaction_id inner join origin on transaction.origin_id = origin.origin_id inner join project on transaction.project_id = project.project_id WHERE transaction.transaction_id = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $transaction_id);

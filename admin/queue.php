@@ -17,7 +17,6 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Queue Management</title>
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="../assets/Untitled-1.png" />
 </head>
@@ -46,14 +45,12 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                 <?php
                                 $sql = "SELECT * FROM transaction inner join vehicle on transaction.vehicle_id = vehicle.vehicle_id inner join arrival on transaction.transaction_id = arrival.transaction_id where status = 'arrived'";
                                 $result = mysqli_query($conn, $sql);
-
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr onclick="addToQueue(<?= $row['transaction_id'] ?>)" style="cursor: pointer;">
                                         <td class="text-center" scope="row"><?= $row['plate_number'] ?></td>
                                         <td class="text-center" scope="row"><?= $row['arrival_time'] ?></td>
                                         <td class="text-center" scope="row"><i class="fa-solid fa-arrow-right"></i></td>
-
                                     </tr>
                                 <?php
                                 }
@@ -63,19 +60,60 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                     </div>
                 </div>
                 <div class="col">
-                    <div class="p-4 shadow-sm bg-body rounded text-center">
-                        <h1 class="display-5 fw-bold">Queue</h1>
-                        <table class="table table-hover text-center">
+                    <div class="p-4 shadow-sm bg-body rounded">
+                        <h1 class="display-5 fw-bold text-center">Queue</h1>
+                        <a class="btn btn-primary" href="view-queue.php">View on Tv or sum</a>
+                        <div class="row my-3">
+                            <div class="col">
+                                <select id="ordinalFilter" class="form-select">
+                                    <option value="">Ordinal</option>
+                                    <option value="1st">1st</option>
+                                    <option value="2nd">2nd</option>
+                                    <option value="3rd">3rd</option>
+                                    <option value="3rd/1st">3rd/1st</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="shiftFilter" class="form-select">
+                                    <option value="">Shift</option>
+                                    <option value="day">Day</option>
+                                    <option value="night">Night</option>
+                                    <option value="day/night">Day/Night</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="scheduleFilter" class="form-select">
+                                    <option value="">Schedule</option>
+                                    <option value="6am-2pm">6am-2pm</option>
+                                    <option value="2pm-6am">2pm-6am</option>
+                                    <option value="6am-2pm/2pm-6am">6am-2pm/2pm-6am</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="lineFilter" class="form-select">
+                                    <option value="">Line</option>
+                                    <option value="Line 3">Line 3</option>
+                                    <option value="Line 4">Line 4</option>
+                                    <option value="Line 5">Line 5</option>
+                                    <option value="Line 6">Line 6</option>
+                                    <option value="GLAD WHSE">GLAD WHSE</option>
+                                    <option value="WHSE 2-BAY 2">WHSE 2-BAY 2</option>
+                                    <option value="WHSE 2-BAY 3">WHSE 2-BAY 3</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <table class="table table-hover text-center" id="queue-table">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Queue Number</th>
-                                    <th>Plate Number</th>
-                                    <th>Ordinal</th>
-                                    <th>Shift</th>
-                                    <th>Schedule</th>
-                                    <th>Line</th>
-                                    <th>Priority</th>
-                                    <th>...</th>
+                                    <th class="text-center">Vehicle Pass</th>
+                                    <th class="text-center">Plate Number</th>
+                                    <th class="text-center">Order</th>
+                                    <th class="text-center">Shift</th>
+                                    <th class="text-center">Schedule</th>
+                                    <th class="text-center">Line</th>
+                                    <th class="text-center">Priority</th>
+                                    <th class="text-center">...</th>
                                 </tr>
                             </thead>
                             <tbody id="queueTable">
@@ -86,7 +124,7 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                     <tr onclick="viewQueue(<?= $row['transaction_id'] ?>)" style="cursor: pointer;">
-                                        <td class="text-center" scope="row"><?= $queue++ ?></td>
+                                        <td class="text-center" scope="row"><?= $row['queue_number'] ?></td>
                                         <td class="text-center" scope="row"><?= $row['plate_number'] ?></td>
                                         <td class="text-center" scope="row"><?= $row['ordinal'] ?></td>
                                         <td class="text-center" scope="row"><?= $row['shift'] ?></td>
@@ -114,12 +152,11 @@ if (!isset($_SESSION['id']) || $_SESSION['userlevel'] !== 'admin') {
     ?>
     <script src="../public/js/bootstrap.bundle.min.js"></script>
     <script src="../public/js/jquery.min.js"></script>
+    <script src="../public/js/sweetalert2.all.min.js"></script>
     <script src="https://kit.fontawesome.com/74741ba830.js" crossorigin="anonymous"></script>
     <script src="js/admin.js"></script>
     <script src="js/transaction.js"></script>
     <script src="js/queue.js"></script>
-
-
 </body>
 
 </html>
